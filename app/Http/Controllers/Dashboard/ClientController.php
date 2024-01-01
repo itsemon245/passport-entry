@@ -36,21 +36,21 @@ class ClientController extends Controller {
             $path     = 'uploads/avatar';
             $filename = Str::slug( uniqid( 'pass-port-entry' ) . time() ) . "." . $request->file( 'avatar' )->getClientOriginalExtension();
             $avatar   = $request->file( 'avatar' )->storeAs( $path, $filename, 'public' );
-            $array = explode('storage',$client->avatar);
-            $path = array_pop($array);
+            $array    = explode( 'storage', $client->avatar );
+            $path     = array_pop( $array );
 
-            if (Storage::disk('public')->exists($path)) {
-                Storage::delete('public/'.$path);
+            if ( Storage::disk( 'public' )->exists( $path ) ) {
+                Storage::delete( 'public/' . $path );
             }
-        }else{
+        } else {
             $avatar = $client->avatar;
         }
         $client = $client->update( [
-            'name'=> $request->name,
-            'username'=> $request->username,
-            'police_station'=> $request->police_station,
-            'password'=> $request->password ? $request->password : $client->password,
-            'avatar' => $avatar,
+            'name'           => $request->name,
+            'username'       => $request->username,
+            'police_station' => $request->police_station,
+            'password'       => $request->password ? $request->password : $client->password,
+            'avatar'         => $avatar,
         ] );
         notify()->success( 'Client updated successfully!' );
         return back();
@@ -58,6 +58,12 @@ class ClientController extends Controller {
 
 
     public function destroy(User $client) {
+        $array = explode( 'storage', $client->avatar );
+        $path  = array_pop( $array );
+
+        if ( Storage::disk( 'public' )->exists( $path ) ) {
+            Storage::delete( 'public/' . $path );
+        }
         $client->delete();
         notify()->success( 'Client deleted successfully' );
         return back();

@@ -5,8 +5,20 @@ return [
         "name" => 'dashboard',
         'icon'=> '<x-heroicon-o-home class="w-5 h-5"/>'
     ],
-    'Client' => (object)[
+    'New Entry' => (object)[
         "name" => 'client.index',
-        'icon' => '<x-heroicon-o-users class="w-5 h-5"/>'
+        'icon' => '<x-heroicon-o-document-plus class="w-5 h-5"/>'
+    ],
+    'Report' => (object)[
+        "name" => 'client.index',
+        'icon' => '<x-heroicon-o-clipboard-document-list class="w-5 h-5"/>'
+    ],
+    'Clients' => (object)[
+        "name" => 'client.index',
+        'icon' => '<x-heroicon-o-user-group class="w-5 h-5"/>'
+    ],
+    'Payment Entry' => (object)[
+        "name" => 'client.index',
+        'icon' => '<x-heroicon-o-currency-bangladeshi class="w-5 h-5"/>'
     ],
 ];

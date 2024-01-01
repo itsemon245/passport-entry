@@ -124,32 +124,32 @@
 
                      <div class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ name: '', random() { return Math.floor(Math.random() * 1000) + 100 } }">
                          <div>
-                             <label for="name"
+                             <label for="edit_name"
                                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                             <input x-model="name" x-on:input="$refs.username.value = name + random()" type="text" id="name" name="name"
+                             <input x-model="name" x-on:input="$refs.username.value = name + random()" type="text" id="edit_name" name="name"
                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                  placeholder="John" required>
                          </div>
 
                          <div>
-                             <label for="police_station"
+                             <label for="edit_police_station"
                                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police
                                  Station</label>
-                             <input type="text" id="police_station" name="police_station"
+                             <input type="text" id="edit_police_station" name="police_station"
                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                  placeholder="Police Station" required>
                          </div>
                          <div>
-                             <label for="username"
+                             <label for="edit_username"
                                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                             <input x-ref="username" type="text" id="username" name="username"
+                             <input x-ref="username" type="text" id="edit_username" name="username"
                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                  placeholder="username" required>
                          </div>
                          <div>
-                             <label for="password"
+                             <label for="edit_password"
                                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                             <input type="password" id="password" name="password"
+                             <input type="password" id="edit_password" name="password"
                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                  placeholder="Password" required>
                          </div>
@@ -158,10 +158,10 @@
 
                              <div class="flex-grow">
                                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                     for="file_input">Upload Photo</label>
+                                     for="edit_file_input">Upload Photo</label>
                                  <input accept=".svg,.png,.jpg" name="avatar"
                                      class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                     aria-describedby="file_input_help" id="file_input" type="file">
+                                     aria-describedby="file_input_help" id="edit_file_input" type="file">
                                  <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG
                                      or JPG (MAX 5MB).</p>
                              </div>
@@ -222,7 +222,7 @@
                             </td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center space-x-4 text-sm">
-                                    <button data-modal-target="edit-modal" data-modal-toggle="edit-modal" hx-get="{{route('client.edit', $client)}}" hx-target="#hx-edit-form"
+                                    <button data-modal-target="edit-modal" data-modal-toggle="edit-modal" hx-get="{{route('client.edit', $client)}}" hx-transition hx-target="#hx-edit-form"
                                         class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                         aria-label="Edit">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
