@@ -4,3 +4,20 @@
 :root{
     font-size: larger;
 }
+
+.hide-date-icon[type="date"]::-webkit-inner-spin-button,
+.hide-date-icon[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: '../../public/assets/img/calendar.svg';
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+
+    float: left;
+}
+
+.tail-select{
+    @apply w-full !rounded-lg bg-gray-400
+}
+.tail-select>input{
+    @apply !rounded-md bg-gray-400
+}

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\EntryController;
 use App\Http\Controllers\Dashboard\ClientController;
 
 
@@ -13,4 +14,5 @@ Route::prefix( 'dashboard' )
         } )->name( 'dashboard' );
 
         Route::resource( 'client', ClientController::class);
+        Route::resource( 'entry', EntryController::class);
     } );

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller {
     public function index() {
-        $clients = User::get();
+        $clients = User::whereNot('id', auth()->id())->get();
         return view( 'dashboard.client.index', compact( 'clients' ) );
     }
 

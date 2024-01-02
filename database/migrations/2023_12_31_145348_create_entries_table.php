@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('date')->default(now()->format('Y-m-d'));
             $table->time('time')->default(now()->format('H:m:s'));
-            $table->string('application_id');
+            $table->string('application_id')->nullable();
             $table->string('police_station');
             $table->enum('doc_type', ['channel', 'general']);
             $table->timestamps();

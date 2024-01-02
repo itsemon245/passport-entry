@@ -6,7 +6,7 @@ return [
         'icon'=> '<x-heroicon-o-home class="w-5 h-5"/>'
     ],
     'New Entry' => (object)[
-        "name" => 'client.index',
+        "name" => 'entry.index',
         'icon' => '<x-heroicon-o-document-plus class="w-5 h-5"/>'
     ],
     'Report' => (object)[
