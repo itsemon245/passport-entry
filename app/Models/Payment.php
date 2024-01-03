@@ -10,4 +10,9 @@ class Payment extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function entry()
+    {
+        return $this->belongsTo(Entry::class);
+    }
 }

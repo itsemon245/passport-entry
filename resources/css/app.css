@@ -16,7 +16,7 @@
 }
 
 .tail-select{
-    @apply w-full !rounded-lg bg-gray-400
+    @apply !rounded-lg bg-gray-400
 }
 .tail-select>input{
     @apply !rounded-md bg-gray-400

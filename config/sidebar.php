@@ -18,7 +18,7 @@ return [
         'icon' => '<x-heroicon-o-user-group class="w-5 h-5"/>'
     ],
     'Payment Entry' => (object)[
-        "name" => 'client.index',
+        "name" => 'payment.index',
         'icon' => '<x-heroicon-o-currency-bangladeshi class="w-5 h-5"/>'
     ],
 ];

@@ -35,4 +35,13 @@ class User extends Authenticatable
         'password' => 'hashed',
         'avatar' => ImageCast::class
     ];
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
+    }
 }
