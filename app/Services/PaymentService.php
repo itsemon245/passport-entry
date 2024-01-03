@@ -7,8 +7,9 @@ class PaymentService
 {
     public function debit(Entry $entry)
     { 
-        $lastPayment = Payment::latest()->first();
-        $lastBalance = $lastPayment ? $lastPayment->balance : 0;
+        $totalCredit = Payment::where(['user_id' => $entry->user_id, 'payment_type' => 'credit'])->sum('amount');
+        $totalDebit = Payment::where(['user_id' => $entry->user_id, 'payment_type' => 'debit'])->sum('amount');
+        $lastBalance = $totalCredit - $totalDebit;
         $amount = ($entry->doc_type == 'channel') ? (int) env('CHANNEL_PAY') : (int) env('GENERAL_PAY');
         return Payment::create([
             'user_id'=> $entry->user_id,
@@ -20,8 +21,9 @@ class PaymentService
     }
     public function credit(Entry $entry)
     { 
-        $lastPayment = Payment::latest()->first();
-        $lastBalance = $lastPayment ? $lastPayment->balance : 0;
+        $totalCredit = Payment::where(['user_id' => $entry->user_id, 'payment_type' => 'credit'])->sum('amount');
+        $totalDebit = Payment::where(['user_id' => $entry->user_id, 'payment_type' => 'debit'])->sum('amount');
+        $lastBalance = $totalCredit - $totalDebit;
         $amount = ($entry->doc_type == 'channel') ? (int) env('CHANNEL_PAY') : (int) env('GENERAL_PAY');
         return Payment::create([
             'user_id'=> $entry->user_id,
