@@ -21,9 +21,8 @@ class ClientController extends Controller {
     }
 
     public function store(Request $request) {
-        $path     = 'uploads/avatar';
-        $filename = Str::slug( uniqid( 'pass-port-entry' ) . time() ) . "." . $request->file( 'avatar' )->extension();
-        $avatar   = $request->file( 'avatar' )->storeAs( $path, $filename, 'public' );
+        $seed     = Str::slug($request->name);
+        $avatar   = "https://api.dicebear.com/7.x/initials/svg?seed=$seed&radius=50";
         $client   = User::create( [
             ...$request->except( '_token' ),
             'avatar' => $avatar,
@@ -32,25 +31,14 @@ class ClientController extends Controller {
         return back();
     }
     public function update(Request $request, User $client) {
-        if ( $request->has( 'avatar' ) ) {
-            $path     = 'uploads/avatar';
-            $filename = Str::slug( uniqid( 'pass-port-entry' ) . time() ) . "." . $request->file( 'avatar' )->getClientOriginalExtension();
-            $avatar   = $request->file( 'avatar' )->storeAs( $path, $filename, 'public' );
-            $array    = explode( 'storage', $client->avatar );
-            $path     = array_pop( $array );
-
-            if ( Storage::disk( 'public' )->exists( $path ) ) {
-                Storage::delete( 'public/' . $path );
-            }
-        } else {
-            $avatar = $client->avatar;
-        }
-        $client = $client->update( [
+        $seed = Str::slug($request->name);
+        $avatar = "https://api.dicebear.com/7.x/initials/svg?seed=$seed&radius=50";
+        $updated = $client->update( [
             'name'           => $request->name,
             'username'       => $request->username,
             'police_station' => $request->police_station,
             'password'       => $request->password ? $request->password : $client->password,
-            'avatar'         => $avatar,
+            'avatar'         => $avatar
         ] );
         notify()->success( 'Client updated successfully!' );
         return back();

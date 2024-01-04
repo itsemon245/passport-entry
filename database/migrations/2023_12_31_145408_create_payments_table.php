@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('entry_id')->constrained()->onDelete('cascade');
+            $table->foreignId('entry_id')->nullable()->constrained()->onDelete('cascade');
             $table->unsignedInteger('amount')->default(700);
             $table->enum('payment_type', ['debit', 'credit']);
             $table->unsignedBigInteger('balance');
