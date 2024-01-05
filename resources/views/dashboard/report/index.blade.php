@@ -7,45 +7,53 @@
 @endsection
 
 @section('content')
-    <div class="flex gap-8 justify-center items-center mb-2 -mt-12 !print:hidden">
-        <div class="print:hidden">
-            <label for="date_from" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                From</label>
-            <div class="relative flex items-center">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                    </svg>
-                </div>
-                <input id="date_from" name="date_from" type="date"
-                    value="{{ today()->subDays(today()->day - 1)->format('Y-m-d') }}"
-                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Select date From">
-            </div>
-        </div>
+    <div class="flex gap-2 2xl:gap-8 justify-center items-center mb-2 lg:-mt-12 !print:hidden">
+        <form class="flex max-sm:flex-col max-md:flex-wrap  gap-2 2xl:gap-8 justify-center items-center !print:hidden"
+            action="{{ route('report.index') }}" method="get">
 
-
-        <div>
-            <label for="date_to" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                To</label>
-            <div class="relative flex items-center">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                    </svg>
+            <div class="print:hidden">
+                <label for="date_from" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                    From</label>
+                <div class="relative flex items-center">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input id="date_from" name="date_from" type="date"
+                        value="{{ request()->query('date_from') ??today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}"
+                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Select date From">
                 </div>
-                <input id="date_to" name="date_to" type="date" value="{{ today('Asia/Dhaka')->format('Y-m-d') }}"
-                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Select date To">
             </div>
-        </div>
-        <x-btn-primary class="mt-7">Refresh</x-btn-primary>
-        <x-btn-secondary class="mt-7"
-            x-on:click="">Print</x-btn-secondary>
+            <div>
+                <label for="date_to" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                    To</label>
+                <div class="relative flex items-center">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input id="date_to" name="date_to" type="date"
+                        value="{{ request()->query('date_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}"
+                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Select date To">
+                </div>
+            </div>
+            <x-btn-primary class="md:mt-7">Refresh</x-btn-primary>
+        </form>
+        <form class="" action="{{ route('report.print') }}" method="get">
+            <input class="hidden" type="date" name="date_from"
+                value="{{ request()->query('date_from') ??today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}">
+            <input class="hidden" type="date" name="date_to"
+                value="{{ request()->query('date_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}">
+            <x-btn-secondary class="max-md:mb-5 md:mt-7 md:block">Print</x-btn-secondary>
+        </form>
     </div>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">

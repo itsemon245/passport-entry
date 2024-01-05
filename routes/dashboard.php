@@ -17,5 +17,6 @@ Route::prefix( 'dashboard' )
         Route::resource( 'client', ClientController::class);
         Route::resource( 'entry', EntryController::class);
         Route::resource( 'payment', PaymentController::class);
-        Route::resource( 'report', ReportController::class);
+        Route::resource( 'report', ReportController::class)->only('index');
+        Route::get('report/print', [ReportController::class, 'print'])->name('report.print');
     } );
