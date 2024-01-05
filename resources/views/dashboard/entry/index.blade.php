@@ -85,7 +85,7 @@
                             <div class="">
                                 <label for="client"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client Name</label>
-                                <select id="client" name="user_id" class="tail-select w-full">
+                                <select id="client" name="user_id" class="tail-select !w-full">
                                     @foreach ($clients as $client)
                                         <option value="{{ $client->id }}">{{ $client->name }}
                                         </option>
@@ -93,13 +93,16 @@
                                 </select>
 
                             </div>
-                            <div>
+                            <div class="">
                                 <label for="police_station"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police
-                                    Station</label>
-                                <input type="text" id="police_station" name="police_station"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Police Station">
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police Station</label>
+                                <select id="police_station" name="police_station" class="tail-select !w-full">
+                                    @foreach (getPoliceStations() as $station)
+                                        <option value="{{ $station->name }}">{{ $station->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
                             </div>
                             <div>
                                 <label for="time"

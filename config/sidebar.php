@@ -10,7 +10,7 @@ return [
         'icon' => '<x-heroicon-o-document-plus class="w-5 h-5"/>'
     ],
     'Report' => (object)[
-        "name" => 'client.index',
+        "name" => 'report.index',
         'icon' => '<x-heroicon-o-clipboard-document-list class="w-5 h-5"/>'
     ],
     'Clients' => (object)[

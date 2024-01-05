@@ -50,12 +50,16 @@
                 </select>
 
             </div>
-            <div>
-                <label for="police_station" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police
-                    Station</label>
-                <input type="text" id="police_station" name="police_station" value="{{ $entry->police_station }}"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Police Station">
+            <div class="">
+                <label for="police_station"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police Station</label>
+                <select id="police_station" name="police_station" class="tail-select !w-full">
+                    @foreach (getPoliceStations() as $station)
+                        <option value="{{ $station->name }}" @selected($station->name == $entry->police_station)>{{ $station->name }}
+                        </option>
+                    @endforeach
+                </select>
+
             </div>
             <div>
                 <label for="time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time</label>

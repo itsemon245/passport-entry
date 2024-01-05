@@ -16,7 +16,7 @@ class EntryController extends Controller
     public function index()
     {
         $entries = Entry::with('user')->latest()->get();
-        $clients = User::get(['id', 'name', 'username']);
+        $clients = User::where('is_admin', 0)->get(['id', 'name', 'username']);
         return view('dashboard.entry.index', compact('entries', 'clients'));
     }
 

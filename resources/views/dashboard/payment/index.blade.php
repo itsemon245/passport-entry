@@ -18,19 +18,23 @@
         <div class="w-full overflow-x-auto">
             <form action="{{ route('payment.store') }}" method="post">
                 @csrf
-                <div class="flex gap-6 items-center justify-center mb-4">
-                    <label for="client" class="text-sm font-medium text-gray-900 dark:text-white">Select Client Name</label>
-                    <select hx-get="{{ route('payment.index') }}" hx-target="#hx-target" hx-select="#hx-target"
-                        hx-include="[type='date']" id="client" name="user_id" class="tail-select payment-data">
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}" @selected(request()->query('user_id') == $client->id)>{{ $client->name }}
-                            </option>
-                        @endforeach
-                    </select>
-    
+                <div class="max-w-lg mx-auto">
+                    <div class="flex gap-6 items-center justify-center mb-4">
+                        <label for="client" class="text-sm font-medium text-gray-900 dark:text-white">Select Client
+                            Name</label>
+                        <select hx-get="{{ route('payment.index') }}" hx-target="#hx-target" hx-select="#hx-target"
+                            hx-include="[type='date']" id="client" name="user_id"
+                            class="tail-select !w-max payment-data">
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->id }}" @selected(request()->query('user_id') == $client->id)>{{ $client->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
                 </div>
-    
-    
+
+
                 <div id="hx-target">
                     <div class="flex gap-12 justify-center items-center mb-8">
                         <div>
@@ -50,8 +54,8 @@
                                     placeholder="Select date From">
                             </div>
                         </div>
-    
-    
+
+
                         <div>
                             <label for="date_to" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
                                 To</label>
@@ -70,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <table class="w-full whitespace-no-wrap">
                         <thead>
                             <tr
@@ -82,21 +86,24 @@
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr class="text-gray-700 dark:text-gray-400 ">
-    
+
                                 <td class="px-4 py-3 text-lg capitalize text-center p-4 border border-slate-300">
-                                    {{ $data->total_balance ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi></td>
+                                    {{ $data->total_balance ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi></td>
                                 <td class="px-4 py-3 text-lg capitalize text-center p-4 border border-slate-300">
-                                    {{ $data->total_paid ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi></td>
+                                    {{ $data->total_paid ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi></td>
                                 <td class="px-4 py-3 text-lg capitalize text-center p-4 border border-slate-300">
-                                    {{ $data->total_due ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi></td>
+                                    {{ $data->total_due ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi></td>
                             </tr>
                         </tbody>
-    
+
                     </table>
-    
+
                     <hr class="border-2 border-slate-300 my-10">
-    
-    
+
+
                     <table class="w-full whitespace-no-wrap mb-3">
                         <thead>
                             <tr
@@ -109,7 +116,7 @@
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr class="text-gray-700 dark:text-gray-400 ">
-    
+
                                 <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">Channel</td>
                                 <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">General</td>
                                 <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">Channel Payment
@@ -117,7 +124,8 @@
                                 <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">General Payment
                                 </td>
                                 <td class="px-4 py-1 text-lg capitalize text-center border border-slate-300" rowspan="2">
-                                    {{ $data->total_due ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> 
+                                    {{ $data->total_due ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi>
                                 </td>
                                 <td class="px-4 py-1 text-lg capitalize text-center border border-slate-300" rowspan="2">
                                     <input type="number" name="amount"
@@ -127,13 +135,17 @@
                             </tr>
                             <tr class="text-gray-700 dark:text-gray-400 ">
                                 <td class="px-4 h-7 text-lg capitalize text-center border border-slate-300">
-                                    {{ $data->channel_entry ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
+                                    {{ $data->channel_entry ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
                                 <td class="px-4 h-7 text-lg capitalize text-center border border-slate-300">
-                                    {{ $data->general_entry ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
+                                    {{ $data->general_entry ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
                                 <td class="px-4 h-7 text-lg capitalize text-center border border-slate-300">
-                                    {{ $data->channel_payment ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
+                                    {{ $data->channel_payment ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
                                 <td class="px-4 h-7 text-lg capitalize text-center border border-slate-300">
-                                    {{ $data->general_payment ?? 0 }} <x-heroicon-o-currency-bangladeshi class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
+                                    {{ $data->general_payment ?? 0 }} <x-heroicon-o-currency-bangladeshi
+                                        class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -142,7 +154,8 @@
                             Save Payment
                         </x-btn-primary>
                     </div>
-                </div></form>
+                </div>
+            </form>
         </div>
     </div>
 @endsection

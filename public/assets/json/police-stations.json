@@ -1,0 +1,107 @@
+[
+    {
+        "id": "65",
+        "district_id": "8",
+        "name": "Rangunia",
+        "bn_name": "রাঙ্গুনিয়া",
+        "url": "rangunia.chittagong.gov.bd"
+    },
+    {
+        "id": "66",
+        "district_id": "8",
+        "name": "Sitakunda",
+        "bn_name": "সীতাকুন্ড",
+        "url": "sitakunda.chittagong.gov.bd"
+    },
+    {
+        "id": "67",
+        "district_id": "8",
+        "name": "Mirsharai",
+        "bn_name": "মীরসরাই",
+        "url": "mirsharai.chittagong.gov.bd"
+    },
+    {
+        "id": "68",
+        "district_id": "8",
+        "name": "Patiya",
+        "bn_name": "পটিয়া",
+        "url": "patiya.chittagong.gov.bd"
+    },
+    {
+        "id": "69",
+        "district_id": "8",
+        "name": "Sandwip",
+        "bn_name": "সন্দ্বীপ",
+        "url": "sandwip.chittagong.gov.bd"
+    },
+    {
+        "id": "70",
+        "district_id": "8",
+        "name": "Banshkhali",
+        "bn_name": "বাঁশখালী",
+        "url": "banshkhali.chittagong.gov.bd"
+    },
+    {
+        "id": "71",
+        "district_id": "8",
+        "name": "Boalkhali",
+        "bn_name": "বোয়ালখালী",
+        "url": "boalkhali.chittagong.gov.bd"
+    },
+    {
+        "id": "72",
+        "district_id": "8",
+        "name": "Anwara",
+        "bn_name": "আনোয়ারা",
+        "url": "anwara.chittagong.gov.bd"
+    },
+    {
+        "id": "73",
+        "district_id": "8",
+        "name": "Chandanaish",
+        "bn_name": "চন্দনাইশ",
+        "url": "chandanaish.chittagong.gov.bd"
+    },
+    {
+        "id": "74",
+        "district_id": "8",
+        "name": "Satkania",
+        "bn_name": "সাতকানিয়া",
+        "url": "satkania.chittagong.gov.bd"
+    },
+    {
+        "id": "75",
+        "district_id": "8",
+        "name": "Lohagara",
+        "bn_name": "লোহাগাড়া",
+        "url": "lohagara.chittagong.gov.bd"
+    },
+    {
+        "id": "76",
+        "district_id": "8",
+        "name": "Hathazari",
+        "bn_name": "হাটহাজারী",
+        "url": "hathazari.chittagong.gov.bd"
+    },
+    {
+        "id": "77",
+        "district_id": "8",
+        "name": "Fatikchhari",
+        "bn_name": "ফটিকছড়ি",
+        "url": "fatikchhari.chittagong.gov.bd"
+    },
+    {
+        "id": "78",
+        "district_id": "8",
+        "name": "Raozan",
+        "bn_name": "রাউজান",
+        "url": "raozan.chittagong.gov.bd"
+    },
+    {
+        "id": "79",
+        "district_id": "8",
+        "name": "Karnafuli",
+        "bn_name": "কর্ণফুলী",
+        "url": "karnafuli.chittagong.gov.bd"
+    }
+]
