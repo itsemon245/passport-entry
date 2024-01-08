@@ -10,7 +10,7 @@
             tail.select('.tail-select')
 
             document.addEventListener('htmx:afterSettle', () => {
-                tail.select('.tail-select').reload()
+                // tail.select('.tail-select').init()
             });
         });
     </script>
@@ -34,7 +34,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        
+
 
                     </div>
                 </div>
@@ -156,9 +156,21 @@
                         </tbody>
                     </table>
                     <div class="flex justify-end">
-                        <x-btn-primary type="submit">
-                            Save Payment
-                        </x-btn-primary>
+                        <div class="flex gap-3 items-end">
+                            <div>
+                                <label for="client" class="text-sm font-medium text-gray-900 dark:text-white">Select
+                                    Payment Method</label>
+                                <select
+                                    name="payment_method"
+                                    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                                    <option value="cash" selected>Cash</option>
+                                    <option value="bkash">Bkash</option>
+                                </select>
+                            </div>
+                            <x-btn-primary type="submit">
+                                Save Payment
+                            </x-btn-primary>
+                        </div>
                     </div>
                 </div>
             </form>

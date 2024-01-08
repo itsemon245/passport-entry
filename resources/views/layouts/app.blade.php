@@ -34,7 +34,7 @@
                     <div class="flex gap-4 items-center">
                         <!-- Modal toggle -->
                         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                            {{ $title }}
+                            {{ str($title)->lower() == 'dashboard' ? '' : $title }}
                         </h2>
                         @yield('actions')
 

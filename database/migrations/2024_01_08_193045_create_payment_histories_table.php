@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
+        Schema::create('payment_histories', function (Blueprint $table) {
+            $table->id();
             $table->date('date')->default(now()->format('Y-m-d'));
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('payment_id')->constrained()->cascadeOnDelete();
             $table->enum('payment_method', ['bkash', 'cash'])->default('cash');
+            $table->bigInt('amount');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('payment_histories');
     }
 };
