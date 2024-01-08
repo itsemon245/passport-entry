@@ -46,10 +46,17 @@
 </style>
 
 <body>
-    <h3 style="text-align: center;font-size:20px; font-weight:bold;margin-bottom:8px;">Report List (<span
-            style="color:#7e3af2;">
-            {{ \Carbon\Carbon::parse(request()->date_from)->format('d F, Y') }} -
-            {{ \Carbon\Carbon::parse(request()->date_to)->format('d F, Y') }}</span>) </h3>
+    <h3 style="text-align: center;font-size:20px; font-weight:bold;margin-bottom:8px;">Report List
+        <div style="color:#7e3af2;">(
+            @if (request()->date_from == request()->date_to)
+                {{ \Carbon\Carbon::parse(request()->date_from)->format('d F, Y') }}
+            @else
+                {{ \Carbon\Carbon::parse(request()->date_from)->format('d F, Y') }} -
+                {{ \Carbon\Carbon::parse(request()->date_to)->format('d F, Y') }}
+            @endif
+            )
+        </div>
+    </h3>
     <table>
         <thead>
             <tr>

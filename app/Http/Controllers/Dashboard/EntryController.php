@@ -36,6 +36,7 @@ class EntryController extends Controller
         $payment = new PaymentService;
         $request->validate([
             'number_of_docs'=> 'numeric|nullable',
+            'application_id'=> 'nullable|unique:entries,application_id',
             'date' => 'date:Y-m-d',
         ]);
         if ($request->is_channel == 'true') {
@@ -62,7 +63,9 @@ class EntryController extends Controller
                 $payment->credit($entry);
             }
         }
-        return back(201);
+
+        notify()->success('Entry submitted successfully!');
+        return redirect()->route('entry.index');
     }
 
     /**

@@ -8,6 +8,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             tail.select('.tail-select')
+
+            document.addEventListener('htmx:afterSettle', () => {
+                tail.select('.tail-select').reload()
+            });
         });
     </script>
 @endsection

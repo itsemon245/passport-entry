@@ -8,6 +8,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             tail.select('.tail-select')
+
+            document.addEventListener('htmx:afterSettle', () => {
+                tail.select('.tail-select').reload()
+            });
+
         });
     </script>
 @endsection
@@ -40,11 +45,12 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form action="{{ route('entry.store') }}" method="post">
+                <form hx-post="{{ route('entry.store') }}" hx-select="#hx-create-form"
+                    hx-target="#hx-create-form" hx-swap="outerHTML" method="post">
                     @csrf
                     <div class="p-4 md:p-5 space-y-4">
 
-                        <div class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ isChannel: true }">
+                        <div id="hx-create-form" class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ isChannel: true }">
 
                             <div role="button" :class="{ 'bg-purple-600': isChannel }"
                                 class="flex max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
@@ -70,8 +76,13 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Application
                                     ID</label>
                                 <input type="text" id="application_id" name="application_id"
+                                    value="{{ old('application_id') }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Application ID">
+                                @error('application_id')
+                                    <x-notify::notify />
+                                    <div class="text-rose-500 text-sm">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div x-show="!isChannel">
                                 <label for="number_of_docs"
@@ -80,6 +91,9 @@
                                 <input type="number" id="number_of_docs" name="number_of_docs"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Number of Documents">
+                                @error('number_of_docs')
+                                    <div class="text-rose-500 text-sm">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="">
@@ -87,23 +101,32 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client Name</label>
                                 <select id="client" name="user_id" class="tail-select !w-full">
                                     @foreach ($clients as $client)
-                                        <option value="{{ $client->id }}">{{ $client->name }}
+                                        <option value="{{ $client->id }}" @selected(old('user_id') == $client->id)>{{ $client->name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('user_id')
+                                    <div class="text-rose-500 text-sm">{{ $message }}</div>
+                                @enderror
 
                             </div>
                             <div class="">
                                 <label for="police_station"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police Station</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police
+                                    Station</label>
                                 <select id="police_station" name="police_station" class="tail-select !w-full">
                                     @foreach (getPoliceStations() as $station)
-                                        <option value="{{ $station->name }}">{{ $station->name }}
+                                        <option value="{{ $station->name }}"@selected(old('police_station') == $station->name)>
+                                            {{ $station->name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('police_station')
+                                    <div class="text-rose-500 text-sm">{{ $message }}</div>
+                                @enderror
 
                             </div>
+
                             <div>
                                 <label for="time"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time</label>
@@ -120,28 +143,27 @@
                                     placeholder="Time">
                             </div>
 
-                            <div class="col-span-2">
-                                <div>
-                                    <label for="date"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                    <div class="relative flex items-center">
-                                        <div
-                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                            </svg>
-                                        </div>
-                                        <input id="date" name="date" type="date"
-                                            value="{{ today('Asia/Dhaka')->format('Y-m-d') }}"
-                                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Select date">
+                        </div>
+                        <div class="col-span-2">
+                            <div>
+                                <label for="date"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                                <div class="relative flex items-center">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
                                     </div>
+                                    <input id="date" name="date" type="date"
+                                        value="{{ request()->date ?? today('Asia/Dhaka')->format('Y-m-d') }}"
+                                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Select date">
                                 </div>
                             </div>
-
                         </div>
+
 
 
                     </div>
@@ -155,7 +177,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Edit modal -->
     <div id="edit-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -223,7 +245,8 @@
 
                             <div class="">
                                 <label for="client"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client Name</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client
+                                    Name</label>
                                 <select id="client" name="user_id" class="tail-select w-full">
                                     @foreach ($clients as $client)
                                         <option value="{{ $client->id }}">{{ $client->name }}
@@ -264,7 +287,8 @@
                                         <div
                                             class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
                                                 <path
                                                     d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                             </svg>
@@ -291,8 +315,6 @@
             </div>
         </div>
     </div>
-
-    
 @endsection
 @section('content')
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
@@ -303,6 +325,7 @@
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         <th class="px-4 py-3 text-center">No.</th>
                         <th class="px-4 py-3">Client Name</th>
+                        <th class="px-4 py-3">Entry Date</th>
                         <th class="px-4 py-3">Document Type</th>
                         <th class="px-4 py-3">Application ID</th>
                         <th class="px-4 py-3">Police Station</th>
@@ -329,8 +352,11 @@
                                     </div>
                                 </div>
                             </td>
+                            <td class="px-4 text-sm py-3">
+                                <div>{{ \Carbon\Carbon::parse($entry->date)->format('d F, Y') }}</div>
+                            </td>
                             <td class="px-4 py-3 text-sm capitalize">
-                                {{ $entry->doc_type }}
+                                <div>{{ $entry->doc_type }}</div>
                             </td>
                             <td class="px-4 py-3 text-sm capitalize">
                                 {{ $entry->application_id ?? 'Not Applicable' }}

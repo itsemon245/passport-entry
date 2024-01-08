@@ -33,7 +33,10 @@ class ReportController extends Controller
             $dateTo = now()->format('Y-m-d');
             $dateFrom = now()->subDays(now()->day-1)->format('Y-m-d');
         }
-        $clients = User::whereHas('entries')
+        $clients = User::whereHas('entries', function($q) use ($dateFrom, $dateTo) {
+            $q->where('date', '>=', $dateFrom);
+            $q->where('date', '<=', $dateTo);
+        })
         ->with(['entries' => function($q)use($dateFrom, $dateTo){
             $q->where('date', '>=', $dateFrom);
             $q->where('date', '<=', $dateTo);

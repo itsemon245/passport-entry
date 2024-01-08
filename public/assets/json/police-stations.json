@@ -100,8 +100,22 @@
     {
         "id": "79",
         "district_id": "8",
-        "name": "Karnafuli",
-        "bn_name": "কর্ণফুলী",
-        "url": "karnafuli.chittagong.gov.bd"
+        "name": "Sadar",
+        "bn_name": "Sadar",
+        "url": "chittagong.gov.bd"
+    },
+    {
+        "id": "80",
+        "district_id": "8",
+        "name": "Jorarganj",
+        "bn_name": "Jorarganj",
+        "url": "chittagong.gov.bd"
+    },
+    {
+        "id": "81",
+        "district_id": "8",
+        "name": "Bhujpur",
+        "bn_name": "Bhujpur",
+        "url": "chittagong.gov.bd"
     }
 ]

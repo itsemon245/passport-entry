@@ -8,8 +8,8 @@
 
 @section('content')
     <div class="flex gap-2 2xl:gap-8 justify-center items-center mb-2 lg:-mt-12 !print:hidden">
-        <form class="flex max-sm:flex-col max-md:flex-wrap  gap-2 2xl:gap-8 justify-center items-center !print:hidden"
-            action="{{ route('report.index') }}" method="get">
+        <form x-ref="form" class="flex max-sm:flex-col max-md:flex-wrap  gap-2 2xl:gap-8 justify-center items-center !print:hidden"
+            action="{{ route('report.index') }}" method="get" x-data="{dateFrom: '{{today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d')}}', dateTo: '{{today('Asia/Dhaka')->format('Y-m-d')}}'}">
 
             <div class="print:hidden">
                 <label for="date_from" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
@@ -22,8 +22,8 @@
                                 d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                         </svg>
                     </div>
-                    <input id="date_from" name="date_from" type="date"
-                        value="{{ request()->query('date_from') ??today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}"
+                    <input @change="dateFrom = $el.value; $refs.print.href = `/dashboard/report/print?date_from=${dateFrom}&date_to=${dateTo}`" id="date_from" name="date_from" type="date"
+                        value="{{ request()->query('date_from') ?? today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}"
                         class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date From">
                 </div>
@@ -47,13 +47,9 @@
             </div>
             <x-btn-primary class="md:mt-7">Refresh</x-btn-primary>
         </form>
-        <form class="" action="{{ route('report.print') }}" method="get">
-            <input class="hidden" type="date" name="date_from"
-                value="{{ request()->query('date_from') ??today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}">
-            <input class="hidden" type="date" name="date_to"
-                value="{{ request()->query('date_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}">
-            <x-btn-secondary class="max-md:mb-5 md:mt-7 md:block">Print</x-btn-secondary>
-        </form>
+
+        
+        <a x-ref="print" href="{{route('report.print')."?date_from=".today('Asia/Dhaka')->subDays(today('Asia/Dhaka')->day-1)->format('Y-m-d')."&date_to=".today('Asia/Dhaka')->format('Y-m-d')}}" role="button" class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Print</a>
     </div>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
