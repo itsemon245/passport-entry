@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\User;
 use App\Models\Entry;
 use App\Models\Payment;
-use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use App\Services\PaymentService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
 {
@@ -27,12 +28,13 @@ class PaymentController extends Controller
             })->sum('amount');
 
             $data['total_paid'] = Payment::where(function ($q) use ($request) {
-                $q->where('created_at', '>=', $request->query('date_from'));
-                $q->where('created_at', '<=', $request->query('date_to'));
+                $q->where('date', '>=', $request->query('date_from'));
+                $q->where('date', '<=', $request->query('date_to'));
                 $q->where('payment_type', 'debit');
                 $q->where('user_id',$request->query('user_id'));
             })->sum('amount');
             $data['total_due'] = $data['total_balance'] - $data['total_paid'];
+
             $data['general_entry'] = Entry::where([
                 'user_id'=> $request->query('user_id'),
                 'doc_type' => 'general'
@@ -76,10 +78,16 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'user_id'=> 'required',
-            'amount'=> 'required|numeric'
+            'total_due'=> 'numeric|required',
+            'amount'=> 'required|numeric|lte:total_due'
         ]);
+        if($validator->fails()){
+            notify()->warning('Amount can\'t be greater than Total Due');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $validator->validate();
         $payment = new PaymentService();
         $payment->debit($request);
         notify()->success('Payment Successful!');

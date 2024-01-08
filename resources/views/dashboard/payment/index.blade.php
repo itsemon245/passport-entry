@@ -30,6 +30,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        
 
                     </div>
                 </div>
@@ -86,6 +87,7 @@
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr class="text-gray-700 dark:text-gray-400 ">
+                                <input type="hidden" name="total_due" value="{{ $data->total_due ?? 0 }}">
 
                                 <td class="px-4 py-3 text-lg capitalize text-center p-4 border border-slate-300">
                                     {{ $data->total_balance ?? 0 }} <x-heroicon-o-currency-bangladeshi
