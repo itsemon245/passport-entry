@@ -38,12 +38,13 @@ class EntryController extends Controller
         $payment = new PaymentService;
         $validator = Validator::make($request->all(), [
             'number_of_docs'=> 'required_unless:is_channel,true|numeric|nullable',
-            'application_id'=> 'required_if_accepted:is_channel|unique:entries,application_id',
+            'application_id'=> 'required_if_accepted:is_channel|numeric|nullable|unique:entries,application_id',
             'user_id'=> 'required|exists:users,id',
             'police_station'=> 'required',
             'date' => 'date:Y-m-d',
         ]);
         if($validator->fails()){
+            dd($validator->errors());
             foreach ($validator->errors() as $key => $value) {
                 notify()->warning($value);
             }
