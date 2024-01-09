@@ -5,12 +5,40 @@
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/tail.select.js@1.0.0/js/tail.select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             tail.select('.tail-select')
 
             document.addEventListener('htmx:afterSettle', () => {
+                let btns = document.querySelectorAll('button[type="submit"]')
+                btns.forEach(btn => {
+                    btn.outerHTML = `<x-btn-primary type="submit">Submit</x-btn-primary>`
+                });
+                let notifyBtn = $('#laravel-notify').find('button');
+                notifyBtn.attr('type', 'button')
+
                 tail.select('.tail-select').reload()
+            });
+            document.addEventListener('htmx:beforeRequest', () => {
+
+                let btns = document.querySelectorAll('button[type="submit"]')
+                btns.forEach(btn => {
+                    btn.outerHTML = `<x-btn-primary type="submit" disabled>
+                                <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                                </svg>
+                            Proccessing...
+                            </x-btn-primary>`
+                });
+            });
+
+            let closeModalBtns = document.querySelectorAll('[data-modal-hide="create-modal"]')
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    location.reload()
+                })
             });
 
         });
@@ -23,7 +51,7 @@
         New Entry
     </x-btn-primary>
     <!-- Main modal -->
-    <div id="create-modal" tabindex="-1" aria-hidden="true"
+    <div id="create-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-2xl max-h-full">
             <!-- Modal content -->
@@ -45,17 +73,16 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form hx-post="{{ route('entry.store') }}" hx-select="#hx-create-form"
-                    hx-target="#hx-create-form" hx-swap="outerHTML" method="post">
+                <form hx-post="{{ route('entry.store') }}" hx-select="#hx-create-form" hx-target="#hx-create-form"
+                    hx-swap="outerHTML" method="post">
                     @csrf
                     <div class="p-4 md:p-5 space-y-4">
 
-                        <div id="hx-create-form" class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ isChannel: true }">
-
+                        <div id="hx-create-form" class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ isChannel: '{{ old('is_channel') }}' == 'false' ? false : true }">
                             <div role="button" :class="{ 'bg-purple-600': isChannel }"
                                 class="flex max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
                                 <input @change="isChannel= true" id="bordered-radio-1" type="radio" value="true"
-                                    name="is_channel" checked
+                                    name="is_channel" @checked(empty(old('is_channel')) || old('is_channel') == 'true')
                                     class="hidden w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="bordered-radio-1"
                                     :class="{ 'text-gray-100': isChannel, 'text-gray-900': !isChannel }"
@@ -64,7 +91,7 @@
                             <div role="button" :class="{ 'bg-purple-600': !isChannel }"
                                 class="flex justify-self-end max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
                                 <input @change="isChannel = false" id="bordered-radio-2" type="radio" value="false"
-                                    name="is_channel"
+                                    name="is_channel" @checked(old('is_channel') == 'false')
                                     class="hidden w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="bordered-radio-2"
                                     :class="{ 'text-gray-100': !isChannel, 'text-gray-900': isChannel }"
@@ -80,7 +107,6 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Application ID">
                                 @error('application_id')
-                                    <x-notify::notify />
                                     <div class="text-rose-500 text-sm">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -105,6 +131,8 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <x-notify::notify />
+
                                 @error('user_id')
                                     <div class="text-rose-500 text-sm">{{ $message }}</div>
                                 @enderror

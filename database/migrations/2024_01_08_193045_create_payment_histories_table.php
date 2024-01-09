@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('payment_id')->constrained()->cascadeOnDelete();
             $table->enum('payment_method', ['bkash', 'cash'])->default('cash');
-            $table->bigInt('amount');
+            $table->bigInteger('amount');
             $table->timestamps();
         });
     }

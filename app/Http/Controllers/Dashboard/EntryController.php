@@ -7,6 +7,7 @@ use App\Models\Entry;
 use Illuminate\Http\Request;
 use App\Services\PaymentService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class EntryController extends Controller
 {
@@ -33,12 +34,22 @@ class EntryController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->dd();
         $payment = new PaymentService;
-        $request->validate([
-            'number_of_docs'=> 'numeric|nullable',
-            'application_id'=> 'nullable|unique:entries,application_id',
+        $validator = Validator::make($request->all(), [
+            'number_of_docs'=> 'required_unless:is_channel,true|numeric|nullable',
+            'application_id'=> 'required_if_accepted:is_channel|unique:entries,application_id',
+            'user_id'=> 'required|exists:users,id',
+            'police_station'=> 'required',
             'date' => 'date:Y-m-d',
         ]);
+        if($validator->fails()){
+            foreach ($validator->errors() as $key => $value) {
+                notify()->warning($value);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $validator->validate();
         if ($request->is_channel == 'true') {
            $entry =  Entry::create([
                 'user_id' => $request->user_id,

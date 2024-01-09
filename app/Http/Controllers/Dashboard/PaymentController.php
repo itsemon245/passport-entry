@@ -8,6 +8,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Services\PaymentService;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentHistory;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
@@ -61,8 +62,9 @@ class PaymentController extends Controller
         $data = (object)[
             ...$data
         ];
+        $payments = $this->getPaymentHistory($request);
         $clients = User::where('is_admin', 0)->get(['id', 'name', 'username']);
-        return view('dashboard.payment.index', compact('clients', 'data'));
+        return view('dashboard.payment.index', compact('clients', 'data', 'payments'));
     }
 
     /**
@@ -92,6 +94,26 @@ class PaymentController extends Controller
         $payment->debit($request);
         notify()->success('Payment Successful!');
         return back();
+    }
+
+
+    protected function getPaymentHistory(Request $request) {
+        if ($request->query('user_id')) {
+            $payments = PaymentHistory::where(function($q)use($request){
+                if ($request->query('payment_from')) {
+                    $q->where('date','>=' ,$request->query('payment_from'));
+                    $q->where('date','<=' ,$request->query('payment_to')); 
+                }else{
+                    $q->where('date','>=' ,$request->query('date_from'));
+                    $q->where('date','<=' ,$request->query('date_to'));
+                }
+                    $q->where('user_id', $request->query('user_id'));
+            })->get();
+        }else{
+            $payments = null;
+        }
+
+        return $payments;
     }
 
     /**

@@ -5,6 +5,10 @@
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/tail.select.js@1.0.0/js/tail.select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             tail.select('.tail-select')
@@ -40,45 +44,48 @@
                 </div>
 
 
-                <div id="hx-target">
-                    <div class="flex gap-12 justify-center items-center mb-8">
-                        <div>
-                            <label for="date_from" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                                From</label>
-                            <div class="relative flex items-center">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
-                                </div>
-                                <input id="date_from" name="date_from" type="date"
-                                    value="{{ today()->subDays(today()->day - 1)->format('Y-m-d') }}"
-                                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select date From">
+                <div class="flex gap-12 justify-center items-center mb-8">
+                    <div>
+                        <label for="date_from" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                            From</label>
+                        <div class="relative flex items-center">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
                             </div>
-                        </div>
-
-
-                        <div>
-                            <label for="date_to" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                                To</label>
-                            <div class="relative flex items-center">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
-                                </div>
-                                <input id="date_to" name="date_to" type="date"
-                                    value="{{ today('Asia/Dhaka')->format('Y-m-d') }}"
-                                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select date To">
-                            </div>
+                            <input hx-get="{{ route('payment.index') }}" hx-target="#hx-target" hx-select="#hx-target"
+                                hx-include="[type='date'],[name='user_id']" id="date_from" name="date_from" type="date"
+                                value="{{ today()->subDays(today()->day - 1)->format('Y-m-d') }}"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date From">
                         </div>
                     </div>
+
+
+                    <div>
+                        <label for="date_to" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                            To</label>
+                        <div class="relative flex items-center">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input hx-get="{{ route('payment.index') }}" hx-target="#hx-target" hx-select="#hx-target"
+                                hx-include="[type='date'],[name='user_id']" id="date_to" name="date_to" type="date"
+                                value="{{ today('Asia/Dhaka')->format('Y-m-d') }}"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date To">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="hx-target">
 
                     <table class="w-full whitespace-no-wrap">
                         <thead>
@@ -160,8 +167,7 @@
                             <div>
                                 <label for="client" class="text-sm font-medium text-gray-900 dark:text-white">Select
                                     Payment Method</label>
-                                <select
-                                    name="payment_method"
+                                <select name="payment_method"
                                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                                     <option value="cash" selected>Cash</option>
                                     <option value="bkash">Bkash</option>
@@ -172,6 +178,101 @@
                             </x-btn-primary>
                         </div>
                     </div>
+
+
+                    @if (request()->query('user_id'))
+                        <div class="my-3" x-data>
+                            <h3 class="text-center text-lg font-medium p-4">Payment History</h3>
+
+                            <div class="flex gap-12 justify-center items-center mb-8">
+                                <input type="text" class="hidden" name="user_id"
+                                    value="{{ request()->query('user_id') }}">
+                                <div>
+                                    <label for="date_from"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                                        From</label>
+                                    <div class="relative flex items-center">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input hx-get="{{ route('payment.index') }}" hx-select="#hx-payment-history"
+                                            hx-target="#hx-payment-history" hx-swap="outerHTML"
+                                            hx-include="[type='date'],[name='user_id']" id="payment_from"
+                                            name="payment_from" type="date"
+                                            value="{{ request()->query('payment_from') ??today()->subDays(today()->day - 1)->format('Y-m-d') }}"
+                                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Select date From">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="payment_to"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                                        To</label>
+                                    <div class="relative flex items-center">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input hx-get="{{ route('payment.index') }}" hx-select="#hx-payment-history"
+                                            hx-target="#hx-payment-history" hx-swap="outerHTML"
+                                            hx-include="[type='date'],[name='user_id']" id="payment_to"
+                                            name="payment_to" type="date"
+                                            value="{{ request()->query('payment_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}"
+                                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Select date To">
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="w-full whitespace-no-wrap" id="hx-payment-history">
+                                <thead>
+                                    <tr
+                                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                        <th class="px-4 py-3 text-center">No.</th>
+                                        <th class="px-4 py-3">Payment Date</th>
+                                        <th class="px-4 py-3">Amount</th>
+                                        <th class="px-4 py-3">Payment Method</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                    @if ($payments)
+                                        @forelse ($payments as $key => $payment)
+                                            <tr class="text-gray-700 dark:text-gray-400">
+                                                <td class="align-middle text-center">{{ ++$key }}</td>
+                                                <td class="px-4 text-sm py-3">
+                                                    <div>{{ \Carbon\Carbon::parse($payment->date)->format('d F, Y') }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 text-sm py-3">
+                                                    <div>{{ $payment->amount }} <x-heroicon-o-currency-bangladeshi
+                                                            class="w-5 h-5 inline mb-1"></x-heroicon-o-currency-bangladeshi>
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 text-sm py-3 capitalize">
+                                                    <div>{{ $payment->payment_method }}</div>
+                                                </td>
+
+                                            </tr>
+                                        @empty
+                                            <x-tr.no-records colspan="6" />
+                                        @endforelse
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+
                 </div>
             </form>
         </div>
