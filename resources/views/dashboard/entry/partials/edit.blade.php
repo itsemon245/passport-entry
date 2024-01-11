@@ -3,26 +3,16 @@
     @method('put')
     <div class="p-4 md:p-5 space-y-4">
 
-        <div class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ isChannel: '{{ $entry->doc_type == 'channel' }}' }">
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
 
-            <div role="button" :class="{ 'bg-purple-600': isChannel }"
-                class="flex max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
-                <input @change="isChannel= true" id="bordered-radio-1" type="radio" value="true" name="is_channel"
-                    @checked($entry->doc_type == 'channel')
-                    class="hidden w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                <label for="bordered-radio-1" :class="{ 'text-gray-100': isChannel, 'text-gray-900': !isChannel }"
-                    class="w-full py-2 text-sm font-medium dark:text-gray-300">Channel</label>
-            </div>
-            <div role="button" :class="{ 'bg-purple-600': !isChannel }"
-                class="flex justify-self-end max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
-                <input @change="isChannel = false" id="bordered-radio-2" type="radio" value="false" name="is_channel"
-                    @checked($entry->doc_type == 'general')
-                    class="hidden w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                <label for="bordered-radio-2" :class="{ 'text-gray-100': !isChannel, 'text-gray-900': isChannel }"
-                    class="w-full py-2 text-sm font-medium dark:text-gray-300">General</label>
-            </div>
 
-            <div x-show="isChannel">
+            <div class="col-span-2">
+                <div class="text-center">
+                    <h2 class="text-lg font-bold text-purple-600 capitalize">Update {{$entry->doc_type}} Entry</h2>
+                </div>
+            </div>
+            @if ($entry->doc_type == 'channel')
+            <div>
                 <label for="application_id"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Application
                     ID</label>
@@ -30,14 +20,17 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Application ID">
             </div>
-            <div x-show="!isChannel">
+            @else
+            <div>
                 <label for="number_of_docs" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Number
                     of
                     Documents</label>
-                <input type="number" id="number_of_docs" name="number_of_docs"
+                <input disabled value="1" type="number" id="number_of_docs" name="number_of_docs"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Number of Documents">
             </div>
+            @endif
+            
 
             <div class="">
                 <label for="client" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client
@@ -51,8 +44,8 @@
 
             </div>
             <div class="">
-                <label for="police_station"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police Station</label>
+                <label for="police_station" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Police
+                    Station</label>
                 <select id="police_station" name="police_station" class="tail-select !w-full">
                     @foreach (getPoliceStations() as $station)
                         <option value="{{ $station->name }}" @selected($station->name == $entry->police_station)>{{ $station->name }}
@@ -102,7 +95,7 @@
     <!-- Modal footer -->
     <div class="flex justify-end gap-4 items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
         <x-btn-danger data-modal-hide="create-modal" type="button">Cancel</x-btn-danger>
-        <x-btn-primary type="submit">Submit</x-btn-primary>
+        <x-btn-primary type="submit">Update</x-btn-primary>
     </div>
 </form>
 
@@ -111,10 +104,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         tail.select('.tail-select')
 
-            document.addEventListener('htmx:afterSettle', () => {
-                tail.select('.tail-select').reload()
-            });
+        document.addEventListener('htmx:afterSettle', () => {
+            tail.select('.tail-select').reload()
+        });
         console.log(tail);
     });
-
 </script>

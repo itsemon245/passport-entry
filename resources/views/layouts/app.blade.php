@@ -46,9 +46,9 @@
         </div>
     </div>
 
-    @yield('scripts')
     <x-notify::notify />
     @notifyJs
+    @yield('scripts')
 </body>
 
 </html>

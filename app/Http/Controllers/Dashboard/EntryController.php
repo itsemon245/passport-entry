@@ -34,7 +34,6 @@ class EntryController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->dd();
         $payment = new PaymentService;
         $validator = Validator::make($request->all(), [
             'number_of_docs'=> 'required_unless:is_channel,true|numeric|nullable',
@@ -44,7 +43,6 @@ class EntryController extends Controller
             'date' => 'date:Y-m-d',
         ]);
         if($validator->fails()){
-            dd($validator->errors());
             foreach ($validator->errors() as $key => $value) {
                 notify()->warning($value);
             }
@@ -102,7 +100,32 @@ class EntryController extends Controller
      */
     public function update(Request $request, Entry $entry)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'number_of_docs'=> 'numeric|nullable',
+            'application_id'=> 'required_if_accepted:is_channel|nullable|unique:entries,application_id,'.$entry->id,
+            'user_id'=> 'required|exists:users,id',
+            'police_station'=> 'required',
+            'date' => 'date:Y-m-d',
+        ]);
+        // $request->dd();
+        if($validator->fails()){
+            dd($validator->errors());
+            foreach ($validator->errors() as $key => $value) {
+                notify()->warning($value);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $validator->validate();
+        $entry =  tap($entry)->update([
+            'user_id' => $request->user_id,
+            'date'=> $request->date,
+            'time'=> $request->time,
+            'application_id'=> $request->application_id,
+            'police_station'=> $request->police_station,
+            'doc_type'=> $request->is_channel == 'true' ? 'channel' : 'general',
+        ]);
+        notify()->success('Entry updated successfully!');
+        return redirect()->route('entry.index');
     }
 
     /**
@@ -110,7 +133,9 @@ class EntryController extends Controller
      */
     public function destroy(Entry $entry)
     {
-        $entry->delete();
+        if ($entry) {
+            $entry->delete();
+        }
         notify()->success('Entry deleted successfully!');
         return back();
     }

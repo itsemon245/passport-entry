@@ -251,7 +251,7 @@
                                             <tr class="text-gray-700 dark:text-gray-400">
                                                 <td class="align-middle text-center">{{ ++$key }}</td>
                                                 <td class="px-4 text-sm py-3">
-                                                    <div>{{ \Carbon\Carbon::parse($payment->date)->format('d F, Y') }}
+                                                    <div>{{ $payment->created_at->format('d F, Y') }}
                                                     </div>
                                                 </td>
                                                 <td class="px-4 text-sm py-3">

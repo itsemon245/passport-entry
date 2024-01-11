@@ -108,7 +108,9 @@ class PaymentController extends Controller
                     $q->where('date','<=' ,$request->query('date_to'));
                 }
                     $q->where('user_id', $request->query('user_id'));
-            })->get();
+            })
+            ->latest()
+            ->get();
         }else{
             $payments = null;
         }
