@@ -16,7 +16,8 @@ Route::prefix( 'dashboard' )
 
         Route::resource( 'client', ClientController::class);
         Route::resource( 'entry', EntryController::class);
-        Route::resource( 'payment', PaymentController::class);
+        Route::resource( 'payment', PaymentController::class)->except('destroy');
         Route::resource( 'report', ReportController::class)->only('index');
         Route::get('report/print', [ReportController::class, 'print'])->name('report.print');
+        Route::get('payment/{payment}/destroy', [PaymentController::class, 'destroy'])->name('payment.delete');
     } );

@@ -227,8 +227,8 @@
                                         </div>
                                         <input hx-get="{{ route('payment.index') }}" hx-select="#hx-payment-history"
                                             hx-target="#hx-payment-history" hx-swap="outerHTML"
-                                            hx-include="[type='date'],[name='user_id']" id="payment_to"
-                                            name="payment_to" type="date"
+                                            hx-include="[type='date'],[name='user_id']" id="payment_to" name="payment_to"
+                                            type="date"
                                             value="{{ request()->query('payment_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}"
                                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Select date To">
@@ -243,6 +243,7 @@
                                         <th class="px-4 py-3">Payment Date</th>
                                         <th class="px-4 py-3">Amount</th>
                                         <th class="px-4 py-3">Payment Method</th>
+                                        <th class="px-4 py-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -262,10 +263,22 @@
                                                 <td class="px-4 text-sm py-3 capitalize">
                                                     <div>{{ $payment->payment_method }}</div>
                                                 </td>
+                                                <td class="px-4 py-3">
+                                                    <a role="button" hx-get="{{ route('payment.delete', $payment->payment_id) }}" hx-swap="delete" hx-target="closest tr"
+                                                        class="w-max flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                                        aria-label="Delete">
+                                                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd"
+                                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                                clip-rule="evenodd"></path>
+                                                        </svg>
+                                                    </a>
+                                                </td>
 
                                             </tr>
                                         @empty
-                                            <x-tr.no-records colspan="6" />
+                                            <x-tr.no-records colspan="5" />
                                         @endforelse
                                     @endif
                                 </tbody>

@@ -147,6 +147,8 @@ class PaymentController extends Controller
      */
     public function destroy(Payment $payment)
     {
-        //
+        $payment->delete();
+        notify()->success('Payment has been deleted!');
+        return back();
     }
 }
