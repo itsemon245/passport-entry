@@ -38,7 +38,7 @@ class EntryController extends Controller
         $payment = new PaymentService;
         $validator = Validator::make($request->all(), [
             'number_of_docs'=> 'required_unless:is_channel,true|numeric|nullable',
-            'application_id'=> 'required_if_accepted:is_channel|numeric|nullable|unique:entries,application_id',
+            'application_id'=> 'required_if_accepted:is_channel|nullable|unique:entries,application_id',
             'user_id'=> 'required|exists:users,id',
             'police_station'=> 'required',
             'date' => 'date:Y-m-d',
@@ -111,6 +111,7 @@ class EntryController extends Controller
     public function destroy(Entry $entry)
     {
         $entry->delete();
+        notify()->success('Entry deleted successfully!');
         return back();
     }
 }

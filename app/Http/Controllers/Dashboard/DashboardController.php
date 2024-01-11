@@ -26,19 +26,22 @@ class DashboardController extends Controller
             $q->where('doc_type','general');
         })->count();
         
-        $data['Received Money Today'] = Payment::whereHas('entry', function($q)use($dateFrom, $dateTo){
-            $q->where('date','=', today()->format('Y-m-d'));
-        })->where('payment_type', 'debit')
+        $data['Received Money Today'] = Payment::where(function($q)use($dateFrom, $dateTo){
+            $q->where('created_at', '>=', today('Asia/Dhaka')->format('Y-m-d'));
+            $q->where('created_at', '<', today('Asia/Dhaka')->addDay()->format('Y-m-d'));
+            $q->where('payment_type', 'debit');
+        })
+        ->sum('amount');
+        $data['Total Received Money This Month'] = Payment::where(function($q)use($dateFrom, $dateTo){
+            $q->where('created_at', '>=', $dateFrom);
+            $q->where('created_at', '<=', $dateTo);
+            $q->where('payment_type', 'debit');
+        })
         ->sum('amount');
         $totalBalance = Payment::whereHas('entry', function($q)use($dateFrom, $dateTo){
             $q->where('date','>=', $dateFrom);
             $q->where('date','<=', $dateTo);
         })->where('payment_type', 'credit')
-        ->sum('amount');
-        $data['Total Received Money This Month'] = Payment::whereHas('entry', function($q)use($dateFrom, $dateTo){
-            $q->where('date','>=', $dateFrom);
-            $q->where('date','<=', $dateTo);
-        })->where('payment_type', 'debit')
         ->sum('amount');
         $data['Total Due Money This Month'] = ($totalBalance - $data['Total Received Money This Month']);
 
