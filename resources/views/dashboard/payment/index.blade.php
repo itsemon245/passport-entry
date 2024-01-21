@@ -171,6 +171,7 @@
                                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                                     <option value="cash" selected>Cash</option>
                                     <option value="bkash">Bkash</option>
+                                    <option value="discount">Discount</option>
                                 </select>
                             </div>
                             <x-btn-primary type="submit">

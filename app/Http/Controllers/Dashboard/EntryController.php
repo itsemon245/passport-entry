@@ -16,7 +16,7 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = Entry::with('user')->latest()->get();
+        $entries = Entry::with('user')->latest()->paginate(10);
         $clients = User::where('is_admin', 0)->get(['id', 'name', 'username']);
         return view('dashboard.entry.index', compact('entries', 'clients'));
     }
@@ -122,7 +122,6 @@ class EntryController extends Controller
             'time'=> $request->time,
             'application_id'=> $request->application_id,
             'police_station'=> $request->police_station,
-            'doc_type'=> $request->is_channel == 'true' ? 'channel' : 'general',
         ]);
         notify()->success('Entry updated successfully!');
         return redirect()->route('entry.index');
