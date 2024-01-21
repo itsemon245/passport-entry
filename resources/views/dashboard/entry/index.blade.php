@@ -423,7 +423,7 @@
                             </td>
                         </tr>
                     @empty
-                        <x-tr.no-records colspan="6" />
+                        <x-tr.no-records colspan="7" />
                     @endforelse
                 </tbody>
             </table>

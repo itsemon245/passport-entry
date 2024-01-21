@@ -8,8 +8,8 @@
 
     <title>{{ config('app.name', $title) }}</title>
 
+    @notifyCss
     @yield('styles')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="{{ asset('assets/css/tailwind.output.css') }}" rel="stylesheet">
     </link>
@@ -19,7 +19,8 @@
     <script src="https://unpkg.com/htmx.org@1.9.6"
         integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous">
     </script>
-    @notifyCss
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
 
 </head>

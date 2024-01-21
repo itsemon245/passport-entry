@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'avatar'=> "https://api.dicebear.com/7.x/initials/svg?seed=Admin&radius=50"
         ]);
 
-        User::factory(10)->create([
+        User::factory(1000)->create([
             'avatar'=> "https://api.dicebear.com/7.x/initials/svg?seed=Client&radius=50"
         ]);
 
