@@ -54,6 +54,7 @@
         @endphp
         
         <a x-ref="print" target="_blank" href="{{route('report.print')."?date_from={$dateFrom}&date_to={$dateTo}"}}" role="button" class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Print</a>
+        {{-- <a x-ref="print" href="{{route('report.download.csv')."?date_from={$dateFrom}&date_to={$dateTo}"}}" role="button" class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-600 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Download</a> --}}
     </div>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">

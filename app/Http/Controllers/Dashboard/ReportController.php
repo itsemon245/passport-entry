@@ -25,6 +25,11 @@ class ReportController extends Controller
         return $pdf->stream();
     }
 
+    public function downloadCsv(Request $request) {
+        $clients = $this->getClients($request);
+        $clients->toCsv();
+    }
+
     protected function getClients(Request $request) {
         if ($request->has('date_from')) {
             $dateFrom = $request->date_from;

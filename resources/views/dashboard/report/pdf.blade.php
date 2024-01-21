@@ -10,6 +10,10 @@
 </head>
 
 <style>
+    :root {
+        font-size: 14px;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -40,14 +44,22 @@
         text-align: start;
     }
 
-    .not-padding {
+    .no-padding {
         padding: 0;
+    }
+
+    .no-margin {
+        margin: 0;
+        padding: 1px;
     }
 </style>
 
 <body>
-    <h3 style="text-align: center;font-size:20px; font-weight:bold;margin-bottom:8px;">Report List
-        <div style="color:#7e3af2;">(
+    <h3 style="text-align: center;font-size:1.4rem; font-weight:bold;margin-bottom:1.5rem;text-decoration:underline;">
+        {{ request()->date_from == request()->date_to ? 'Daily File Statement' : 'Report Statement' }}
+        <div style="color:#7e3af2;font-weight:500;font-size: 1.1rem;margin-top:1rem;">
+            <span>Date:</span>
+            (
             @if (request()->date_from == request()->date_to)
                 {{ \Carbon\Carbon::parse(request()->date_from)->format('d F, Y') }}
             @else
@@ -63,8 +75,9 @@
                 <th rowspan="2">No.</th>
                 <th rowspan="2">Client Name</th>
                 <th colspan="2">Survey</th>
-                <th rowspan="2">Application ID</th>
-                <th rowspan="2">Police Station</th>
+                <th rowspan="2">Enrollment ID</th>
+                <th rowspan="2">P.S Name</th>
+                <th rowspan="2">Agency</th>
             </tr>
             <tr>
                 <th>Channel</th>
@@ -76,7 +89,7 @@
                 <tr>
                     <td>{{ ++$key }}</td>
                     <td class="not-center">
-                        <p class="font-semibold">{{ $client->name }}</p>
+                        <p class="no-padding no-margin">{{ $client->name }}</p>
                     </td>
                     <td>
                         {{ $client->channel_count }}
@@ -85,28 +98,37 @@
                         {{ $client->general_count }}
                     </td>
                     <td class="no-padding">
-                        @foreach ($client->entries as $i => $entry)
-                            <table style="width:100%;border-collapse:collapse;"
-                                class="{{ $client->entries->count() == 1 || $i == 0 ? '' : 'first-child' }} w-full">
-                                <tr class="border-none">
-                                    <td class="border-none">{{ $entry->application_id }}</td>
-                                </tr>
-                            </table>
-                        @endforeach
+                        @if ($client->entries->count() > 0)
+                            @foreach ($client->entries as $i => $entry)
+                                <table style="width:100%;border-collapse:collapse;"
+                                    class="{{ $client->entries->count() == 1 || $i == 0 ? '' : 'first-child' }} w-full">
+                                    <tr class="border-none">
+                                        <td class="border-none">{{ $entry->application_id }}</td>
+                                    </tr>
+                                </table>
+                            @endforeach
+                        @else
+                            <span style="font-weight: 500; font-size: 1.2rem;">-</span>
+                        @endif
                     </td>
                     <td class="no-padding">
-                        @foreach ($client->entries as $i => $entry)
-                            <table style="width:100%;border-collapse:collapse;"
-                                class="{{ $client->entries->count() == 1 || $i == 0 ? '' : 'first-child' }} w-full">
-                                <tr class="border-none">
-                                    <td class="border-none">{{ $entry->police_station }}</td>
-                                </tr>
-                            </table>
-                        @endforeach
+                        @if ($client->entries->count() > 0)
+                            @foreach ($client->entries as $i => $entry)
+                                <table style="width:100%;border-collapse:collapse;"
+                                    class="{{ $client->entries->count() == 1 || $i == 0 ? '' : 'first-child' }} w-full">
+                                    <tr class="border-none">
+                                        <td class="border-none">{!! $entry->police_station ?? '<span style="font-weight: 500; font-size: 1.2rem;">-</span>' !!}</td>
+                                    </tr>
+                                </table>
+                            @endforeach
+                        @else
+                            <span style="font-weight: 500; font-size: 1.2rem;">-</span>
+                        @endif
                     </td>
+                    <td class="no-padding">IO</td>
                 </tr>
             @empty
-                <x-tr.no-records colspan="7" />
+                <x-tr.no-records colspan="" />
             @endforelse
         </tbody>
     </table>
