@@ -16,7 +16,9 @@
         "laravel/tinker": "^2.8",
         "mckenziearts/laravel-notify": "^2.4",
         "nwidart/laravel-modules": "^10.0",
+        "spatie/browsershot": "^4.0",
         "spatie/laravel-data": "^3.9",
+        "spatie/laravel-pdf": "^1.1",
         "swoole/ide-helper": "^5.1"
     },
     "require-dev": {

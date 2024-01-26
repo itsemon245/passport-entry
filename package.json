@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "flowbite": "^2.2.1",
-        "flowbite-datepicker": "^1.2.6"
+        "flowbite-datepicker": "^1.2.6",
+        "puppeteer": "^21.9.0"
     }
 }

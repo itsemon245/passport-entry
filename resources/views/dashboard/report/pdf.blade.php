@@ -7,6 +7,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Report PDF</title>
+    <style>
+        {!! Vite::content('resources/css/app.css') !!}
+    </style>
 </head>
 
 <style>
@@ -14,9 +17,17 @@
         font-size: 14px;
     }
 
+    *,
+    body,
+    table,
+    tr,
+    td {
+        box-sizing: border-box;
+    }
+
     table {
         width: 100%;
-        border-collapse: collapse;
+        /* border-collapse: collapse; */
     }
 
     td,
@@ -52,9 +63,30 @@
         margin: 0;
         padding: 1px;
     }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: auto;
+        page-break-after: auto;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    @page {
+        margin: 12px 0;
+    }
 </style>
 
-<body>
+<body style="padding: 8px;">
     <h3 style="text-align: center;font-size:1.4rem; font-weight:bold;margin-bottom:1.5rem;text-decoration:underline;">
         {{ request()->date_from == request()->date_to ? 'Daily File Statement' : 'Report Statement' }}
         <div style="color:#7e3af2;font-weight:500;font-size: 1.1rem;margin-top:1rem;">
@@ -70,10 +102,10 @@
         </div>
     </h3>
     <table>
-        <thead>
+        <tbody>
             <tr>
                 <th rowspan="2">No.</th>
-                <th rowspan="2">Client Name</th>
+                <th rowspan="2" class="text-left">IO Name</th>
                 <th colspan="2">Survey</th>
                 <th rowspan="2">Enrollment ID</th>
                 <th rowspan="2">P.S Name</th>
@@ -83,12 +115,10 @@
                 <th>Channel</th>
                 <th>General</th>
             </tr>
-        </thead>
-        <tbody class="">
             @forelse ($clients as $key => $client)
                 <tr>
                     <td>{{ ++$key }}</td>
-                    <td class="not-center">
+                    <td class="text-left">
                         <p class="no-padding no-margin">{{ $client->name }}</p>
                     </td>
                     <td>
@@ -130,6 +160,25 @@
             @empty
                 <x-tr.no-records colspan="" />
             @endforelse
+            <tr>
+                <td></td>
+                <td class="text-right px-2 font-bold">
+                    Total
+                </td>
+                <td class="font-bold">
+                    {{ $clients->sum('channel_count') }}
+                </td>
+                <td class="font-bold">
+                    {{ $clients->sum('general_count') }}
+                </td>
+                <td class="no-padding">
+
+                </td>
+                <td class="no-padding">
+
+                </td>
+                <td class="no-padding"></td>
+            </tr>
         </tbody>
     </table>
 </body>
