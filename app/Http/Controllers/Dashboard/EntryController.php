@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\User;
-use App\Models\Entry;
-use Illuminate\Http\Request;
-use App\Services\PaymentService;
 use App\Http\Controllers\Controller;
+use App\Models\Entry;
+use App\Models\User;
+use App\Services\PaymentService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class EntryController extends Controller
@@ -14,10 +14,17 @@ class EntryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $entries = Entry::with('user')->latest()->paginate(10);
-        $clients = User::where('is_admin', 0)->get(['id', 'name', 'username']);
+        $entries = Entry::with('user')
+            ->where(function ($q) use ($request) {
+                if ($request->has('query')) {
+                    $q->orWhere('application_id', $request->query('query'));
+                    $q->orWhere('police_station', $request->query('query'));
+                }
+            })
+            ->latest()->paginate(10);
+        $clients = User::where('is_admin', 0)->get([ 'id', 'name', 'username' ]);
         return view('dashboard.entry.index', compact('entries', 'clients'));
     }
 
@@ -34,15 +41,15 @@ class EntryController extends Controller
      */
     public function store(Request $request)
     {
-        $payment = new PaymentService;
+        $payment   = new PaymentService;
         $validator = Validator::make($request->all(), [
-            'number_of_docs'=> 'required_unless:is_channel,true|numeric|nullable',
-            'application_id'=> 'required_if_accepted:is_channel|nullable|unique:entries,application_id',
-            'user_id'=> 'required|exists:users,id',
-            'police_station'=> 'required',
-            'date' => 'date:Y-m-d',
-        ]);
-        if($validator->fails()){
+            'number_of_docs' => 'required_unless:is_channel,true|numeric|nullable',
+            'application_id' => 'required_if_accepted:is_channel|nullable|unique:entries,application_id',
+            'user_id'        => 'required|exists:users,id',
+            'police_station' => 'required',
+            'date'           => 'date:Y-m-d',
+         ]);
+        if ($validator->fails()) {
             foreach ($validator->errors() as $key => $value) {
                 notify()->warning($value);
             }
@@ -50,26 +57,26 @@ class EntryController extends Controller
         }
         $validator->validate();
         if ($request->is_channel == 'true') {
-           $entry =  Entry::create([
-                'user_id' => $request->user_id,
-                'date'=> $request->date,
-                'time'=> $request->time,
-                'application_id'=> $request->application_id,
-                'police_station'=> $request->police_station,
-                'doc_type'=> 'channel',
-            ]);
+            $entry = Entry::create([
+                'user_id'        => $request->user_id,
+                'date'           => $request->date,
+                'time'           => $request->time,
+                'application_id' => $request->application_id,
+                'police_station' => $request->police_station,
+                'doc_type'       => 'channel',
+             ]);
             $payment->credit($entry);
-            
-        }elseif($request->number_of_docs != null){
+
+        } elseif ($request->number_of_docs != null) {
             $number = (int) $request->number_of_docs;
-            for ($i=0; $i < $number; $i++) { 
+            for ($i = 0; $i < $number; $i++) {
                 $entry = Entry::create([
-                    'user_id' => $request->user_id,
-                    'date'=> $request->date,
-                    'time'=> $request->time,
-                    'police_station'=> $request->police_station,
-                    'doc_type'=> 'general',
-                ]);
+                    'user_id'        => $request->user_id,
+                    'date'           => $request->date,
+                    'time'           => $request->time,
+                    'police_station' => $request->police_station,
+                    'doc_type'       => 'general',
+                 ]);
                 $payment->credit($entry);
             }
         }
@@ -91,7 +98,7 @@ class EntryController extends Controller
      */
     public function edit(Entry $entry)
     {
-        $clients = User::get(['id', 'name', 'username']);
+        $clients = User::get([ 'id', 'name', 'username' ]);
         return view('dashboard.entry.partials.edit', compact('entry', 'clients'));
     }
 
@@ -101,14 +108,14 @@ class EntryController extends Controller
     public function update(Request $request, Entry $entry)
     {
         $validator = Validator::make($request->all(), [
-            'number_of_docs'=> 'numeric|nullable',
-            'application_id'=> 'required_if_accepted:is_channel|nullable|unique:entries,application_id,'.$entry->id,
-            'user_id'=> 'required|exists:users,id',
-            'police_station'=> 'required',
-            'date' => 'date:Y-m-d',
-        ]);
+            'number_of_docs' => 'numeric|nullable',
+            'application_id' => 'required_if_accepted:is_channel|nullable|unique:entries,application_id,' . $entry->id,
+            'user_id'        => 'required|exists:users,id',
+            'police_station' => 'required',
+            'date'           => 'date:Y-m-d',
+         ]);
         // $request->dd();
-        if($validator->fails()){
+        if ($validator->fails()) {
             dd($validator->errors());
             foreach ($validator->errors() as $key => $value) {
                 notify()->warning($value);
@@ -116,13 +123,13 @@ class EntryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $validator->validate();
-        $entry =  tap($entry)->update([
-            'user_id' => $request->user_id,
-            'date'=> $request->date,
-            'time'=> $request->time,
-            'application_id'=> $request->application_id,
-            'police_station'=> $request->police_station,
-        ]);
+        $entry = tap($entry)->update([
+            'user_id'        => $request->user_id,
+            'date'           => $request->date,
+            'time'           => $request->time,
+            'application_id' => $request->application_id,
+            'police_station' => $request->police_station,
+         ]);
         notify()->success('Entry updated successfully!');
         return redirect()->route('entry.index');
     }

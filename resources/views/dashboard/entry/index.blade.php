@@ -5,7 +5,9 @@
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/tail.select.js@1.0.0/js/tail.select.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             tail.select('.tail-select')
@@ -13,7 +15,8 @@
             document.addEventListener('htmx:afterSettle', () => {
                 let btns = document.querySelectorAll('button[type="submit"]')
                 btns.forEach(btn => {
-                    btn.outerHTML = `<x-btn-primary type="submit">Submit</x-btn-primary>`
+                    btn.outerHTML =
+                        `<x-btn-primary type="submit">${btn.dataset.type == "search"? "Search": "Submit"}</x-btn-primary>`
                 });
                 let notifyBtn = $('#laravel-notify').find('button');
                 notifyBtn.attr('type', 'button')
@@ -46,10 +49,36 @@
 @endsection
 
 @section('actions')
-    <x-btn-primary data-modal-target="create-modal" data-modal-toggle="create-modal">
-        <x-heroicon-o-plus class="w-5 h-5" />
-        New Entry
-    </x-btn-primary>
+    <div class="flex-grow">
+        <x-btn-primary data-modal-target="create-modal" data-modal-toggle="create-modal">
+            <x-heroicon-o-plus class="w-5 h-5" />
+            New Entry
+        </x-btn-primary>
+    </div>
+
+    <div class="grid lg:grid-cols-2 w-full" x-data="">
+        <form hx-get="{{ route('entry.index') }}" method="GET" hx-target="#hx-search-target" hx-select="#hx-search-target"
+            hx-swap="otherHTML" class="w-full">
+            <label for="default-search"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div class="relative flex items-center gap-2.5">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3  pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input @change="$el.value = $el.value.trim().toLowerCase();" type="search" id="default-search" name="query"
+                    class="block w-full p-[0.6rem] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search Application ID...">
+                <x-btn-primary data-type="search" type="submit" class="">
+                    Submit
+                </x-btn-primary>
+            </div>
+        </form>
+    </div>
+
     <!-- Main modal -->
     <div id="create-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -83,7 +112,7 @@
                                 class="flex max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
                                 <input @change="isChannel= true" id="bordered-radio-1" type="radio" value="true"
                                     name="is_channel" @checked(empty(old('is_channel')) || old('is_channel') == 'true')
-                                    class="hidden w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    class="hidden w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="bordered-radio-1"
                                     :class="{ 'text-gray-100': isChannel, 'text-gray-900': !isChannel }"
                                     class="w-full py-2 text-sm font-medium dark:text-gray-300">Channel</label>
@@ -92,7 +121,7 @@
                                 class="flex justify-self-end max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
                                 <input @change="isChannel = false" id="bordered-radio-2" type="radio" value="false"
                                     name="is_channel" @checked(old('is_channel') == 'false')
-                                    class="hidden w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    class="hidden w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="bordered-radio-2"
                                     :class="{ 'text-gray-100': !isChannel, 'text-gray-900': isChannel }"
                                     class="w-full py-2 text-sm font-medium dark:text-gray-300">General</label>
@@ -104,7 +133,7 @@
                                     ID</label>
                                 <input type="text" id="application_id" name="application_id"
                                     value="{{ old('application_id') }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                     placeholder="Application ID">
                                 @error('application_id')
                                     <div class="text-rose-500 text-sm">{{ $message }}</div>
@@ -115,7 +144,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Number of
                                     Documents</label>
                                 <input type="number" id="number_of_docs" name="number_of_docs"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                     placeholder="Number of Documents">
                                 @error('number_of_docs')
                                     <div class="text-rose-500 text-sm">{{ $message }}</div>
@@ -124,10 +153,12 @@
 
                             <div class="">
                                 <label for="client"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client Name</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client
+                                    Name</label>
                                 <select id="client" name="user_id" class="tail-select !w-full">
                                     @foreach ($clients as $client)
-                                        <option value="{{ $client->id }}" @selected(old('user_id') == $client->id)>{{ $client->name }}
+                                        <option value="{{ $client->id }}" @selected(old('user_id') == $client->id)>
+                                            {{ $client->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -167,7 +198,7 @@
                                     $el.value = d + ':' + m
                                 
                                 }" id="time" name="time"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                     placeholder="Time">
                             </div>
 
@@ -186,7 +217,7 @@
                                     </div>
                                     <input id="date" name="date" type="date"
                                         value="{{ request()->date ?? today('Asia/Dhaka')->format('Y-m-d') }}"
-                                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date">
                                 </div>
                             </div>
@@ -345,7 +376,7 @@
     </div>
 @endsection
 @section('content')
-    <div class="w-full overflow-hidden rounded-lg shadow-xs">
+    <div class="w-full overflow-hidden rounded-lg shadow-xs" id="hx-search-target">
         <div class="w-full overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <thead>
@@ -429,10 +460,10 @@
             </table>
         </div>
 
-        {{$entries->onEachSide(5)->links()}}
+        {{ $entries->onEachSide(5)->links() }}
 
         {{-- pagination --}}
-        
+
     </div>
 @endsection
 
