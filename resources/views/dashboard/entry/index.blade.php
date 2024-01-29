@@ -13,7 +13,7 @@
             tail.select('.tail-select')
 
             document.addEventListener('htmx:afterSettle', () => {
-                let btns = document.querySelectorAll('button[type="submit"]')
+                let btns = document.querySelectorAll('[type="submit"]')
                 btns.forEach(btn => {
                     btn.outerHTML =
                         `<x-btn-primary type="submit">${btn.dataset.type == "search"? "Search": "Submit"}</x-btn-primary>`
@@ -25,7 +25,7 @@
             });
             document.addEventListener('htmx:beforeRequest', () => {
 
-                let btns = document.querySelectorAll('button[type="submit"]')
+                let btns = document.querySelectorAll('[type="submit"]')
                 btns.forEach(btn => {
                     btn.outerHTML = `<x-btn-primary type="submit" disabled>
                                 <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,8 +57,8 @@
     </div>
 
     <div class="grid lg:grid-cols-2 w-full" x-data="">
-        <form hx-get="{{ route('entry.index') }}" method="GET" hx-target="#hx-search-target" hx-select="#hx-search-target"
-            hx-swap="otherHTML" class="w-full">
+        <form action="{{ route('entry.index') }}" method="GET" hx-target="#hx-search-target" hx-select="#hx-search-target"
+            hx-swap="outerHTML" class="w-full">
             <label for="default-search"
                 class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative flex items-center gap-2.5">
@@ -69,7 +69,7 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input @change="$el.value = $el.value.trim().toLowerCase();" type="search" id="default-search" name="query"
+                <input @change="$el.value = $el.value.trim().toLowerCase();" value="{{request()->query('query')}}" autofocus type="search" id="default-search" name="query"
                     class="block w-full p-[0.6rem] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search Application ID...">
                 <x-btn-primary data-type="search" type="submit" class="">
@@ -425,7 +425,7 @@
                             </td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center space-x-4 text-sm">
-                                    <button data-modal-target="edit-modal" data-modal-toggle="edit-modal"
+                                    <a role="button" data-modal-target="edit-modal" data-modal-toggle="edit-modal"
                                         hx-get="{{ route('entry.edit', $entry) }}" hx-transition
                                         hx-target="#hx-edit-form"
                                         class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
@@ -435,7 +435,7 @@
                                                 d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
                                             </path>
                                         </svg>
-                                    </button>
+                                    </a>
                                     <form action="{{ route('entry.destroy', $entry) }}" method="post">
                                         @csrf
                                         @method('DELETE')
