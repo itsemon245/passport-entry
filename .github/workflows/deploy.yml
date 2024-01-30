@@ -18,6 +18,8 @@ jobs:
           export GIT_TRACE_PACKET=1
           export GIT_TRACE=1
           export GIT_CURL_VERBOSE=1
+          eval "$(ssh-agent)"
+          ssh-add ~/.ssh/qbsoft_id_25519
           git stash
           git config pull.rebase true
           git pull origin main
