@@ -56,12 +56,10 @@
         </x-btn-primary>
     </div>
 
-    <div class="grid lg:grid-cols-2 w-full" x-data="">
-        <form action="{{ route('entry.index') }}" method="GET" hx-target="#hx-search-target" hx-select="#hx-search-target"
-            hx-swap="outerHTML" class="w-full">
-            <label for="default-search"
-                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-            <div class="relative flex items-center gap-2.5">
+    <div class="grid lg:grid-cols-3 w-full" x-data="">
+        <form class="col-span-2" action="{{ route('entry.index') }}" method="GET" hx-target="#hx-search-target"
+            hx-select="#hx-search-target" hx-swap="outerHTML" class="w-full">
+            <div class="relative grid grid-cols-7 items-center gap-2.5">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3  pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -69,12 +67,24 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input @change="$el.value = $el.value.trim().toLowerCase();" value="{{request()->query('query')}}" autofocus type="search" id="default-search" name="query"
-                    class="block w-full p-[0.6rem] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                <input @change="$el.value = $el.value.trim().toLowerCase();" value="{{ request()->query('query') }}"
+                    autofocus type="search" id="default-search" name="query"
+                    class="col-span-3 block w-full p-[0.6rem] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search Application ID...">
+                <div class="col-span-2">
+                    <select id="countries" name="doc_type"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected disabled>Choose Doc Type</option>
+                        <option value="channel" @selected(request()->query('doc_type') == 'channel')>Channel</option>
+                        <option value="general" @selected(request()->query('doc_type') == 'general')>General</option>
+                    </select>
+                </div>
                 <x-btn-primary data-type="search" type="submit" class="">
                     Submit
                 </x-btn-primary>
+                <a role="button" href="{{route('entry.index')}}" class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                    Reset
+                </a>
             </div>
         </form>
     </div>

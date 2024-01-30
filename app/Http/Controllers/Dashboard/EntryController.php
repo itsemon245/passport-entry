@@ -22,6 +22,9 @@ class EntryController extends Controller
                     $q->orWhere('application_id', $request->query('query'));
                     $q->orWhere('police_station', $request->query('query'));
                 }
+                if ($request->has('doc_type')) {
+                    $q->orWhere('doc_type', $request->query('doc_type'));
+                }
             })
             ->latest()->paginate(10);
         $clients = User::where('is_admin', 0)->get([ 'id', 'name', 'username' ]);
