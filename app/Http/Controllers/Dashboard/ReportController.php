@@ -52,12 +52,17 @@ class ReportController extends Controller
         $clients = User::whereHas('entries', function ($q) use ($dateFrom, $dateTo) {
             $q->where('date', '>=', $dateFrom);
             $q->where('date', '<=', $dateTo);
-        })
-            ->with([ 'entries' => function ($q) use ($dateFrom, $dateTo) {
+        })->with([ 'entries' => function ($q) use ($dateFrom, $dateTo) {
                 $q->where('date', '>=', $dateFrom);
                 $q->where('date', '<=', $dateTo);
-                $q->where('doc_type', '=', 'channel');
+               # $q->where('doc_type', '=', 'channel');
             } ])
+            ->withCount([ 'entries as rowspan' => function ($q) use ($dateFrom, $dateTo) {
+                $q->where('date', '>=', $dateFrom);
+                $q->where('date', '<=', $dateTo);
+               $q->where('doc_type', '=', 'channel');
+            } ])
+            
             ->withCount([ 'entries as channel_count' => function ($q) use ($dateFrom, $dateTo) {
                 $q->where('date', '>=', $dateFrom);
                 $q->where('date', '<=', $dateTo);
