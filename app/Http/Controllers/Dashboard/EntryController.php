@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Models\User;
 use App\Services\PaymentService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,6 +18,11 @@ class EntryController extends Controller
     public function index(Request $request)
     {
         $entries = Entry::with('user')
+            ->orWhereHas('user', function (Builder $q) use ($request) {
+                if ($request->has('query')) {
+                    $q->orWhere('name', $request->query('qeury'));
+                }
+            })
             ->where(function ($q) use ($request) {
                 if ($request->has('query')) {
                     $q->orWhere('application_id', $request->query('query'));

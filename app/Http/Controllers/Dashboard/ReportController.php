@@ -21,17 +21,17 @@ class ReportController extends Controller
     {
         $clients = $this->getClients($request);
         $time    = str(now())->slug() . "-" . now()->timestamp;
-        Browsershot::html(view('dashboard.report.pdf', compact('clients'))->render())
-            ->setNodeBinary('/home/emon/.nvm/versions/node/v20.10.0/bin/node')
-            ->setNpmBinary('/home/emon/.nvm/versions/node/v20.10.0/bin/npm')->savePdf(storage_path('app/public/temp/report.pdf'));
-        return Storage::download('public/temp/report.pdf', "report-$time.pdf");
+        // Browsershot::html(view('dashboard.report.pdf', compact('clients'))->render())
+        //     ->setNodeBinary('/home/emon/.nvm/versions/node/v20.10.0/bin/node')
+        //     ->setNpmBinary('/home/emon/.nvm/versions/node/v20.10.0/bin/npm')->savePdf(storage_path('app/public/temp/report.pdf'));
+        // return Storage::download('public/temp/report.pdf', "report-$time.pdf");
         // Browsershot::html(view('dashboard.report.pdf', compact('clients'))->render())->newHeadless()->save('example.pdf');
 
         // return Pdf::view('dashboard.report.pdf', compact('clients'))
         //     ->format('a4')
         //     ->save("report.pdf");
         // return $pdf->download();
-        // return view('dashboard.report.pdf', compact('clients'));
+        return view('dashboard.report.pdf', compact('clients'));
     }
 
     public function downloadCsv(Request $request)
