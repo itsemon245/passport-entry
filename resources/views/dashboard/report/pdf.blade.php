@@ -155,13 +155,13 @@
                         <tr>
                             <td>{{ $sl }}.</td>
                             @if ($index == 0)
-                                <td rowspan="{{ $client->entries->count() }}" class="text-left">
+                                <td rowspan="{{ $client->rowspan ==0 ? 1 : $client->rowspan }}" class="text-left">
                                     <p class="no-padding no-margin">{{ $client->name }}</p>
                                 </td>
-                                <td rowspan="{{ $client->entries->count() }}">
+                                <td rowspan="{{ $client->rowspan ==0 ? 1 : $client->rowspan}}">
                                     {{ $client->channel_count }}
                                 </td>
-                                <td rowspan="{{ $client->entries->count() }}">
+                                <td rowspan="{{ $client->rowspan ==0 ? 1 : $client->rowspan }}">
                                     {{ $client->general_count }}
                                 </td>
                             @endif
@@ -172,9 +172,14 @@
                                 {!! $entry->police_station ?? '<span style="font-weight: 500; font-size: 1.2rem;">-</span>' !!}
                             </td>
                             @if ($index == 0)
-                                <td class="no-padding" rowspan="{{ $client->entries->count() }}">IO</td>
+                                <td class="no-padding" rowspan="{{ $client->rowspan ==0 ? 1 : $client->rowspan}}">IO</td>
                             @endif
                         </tr>
+                @php
+                if($client->rowspan == 0){
+                break;
+                }
+                @endphp
                     @endforeach
                     @php
                         $count = $key == 0 ? $client->entries->count() : $sl;
