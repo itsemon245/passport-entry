@@ -56,10 +56,10 @@
         </x-btn-primary>
     </div>
 
-    <div class="grid lg:grid-cols-3 w-full" x-data="">
-        <form class="col-span-2" action="{{ route('entry.index') }}" method="GET" hx-target="#hx-search-target"
-            hx-select="#hx-search-target" hx-swap="outerHTML" class="w-full">
-            <div class="relative grid grid-cols-7 items-center gap-2.5">
+    <div class="" x-data="">
+        <form class="grid lg:grid-cols-5 gap-4" action="{{ route('entry.index') }}" method="GET"
+            hx-target="#hx-search-target" hx-select="#hx-search-target" hx-swap="outerHTML" class="w-full">
+            <div class="relative items-center gap-2.5">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3  pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -69,16 +69,34 @@
                 </div>
                 <input @change="$el.value = $el.value.trim();" value="{{ request()->query('query') }}" autofocus
                     type="search" id="default-search" name="query"
-                    class="col-span-3 block w-full p-[0.6rem] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block w-full p-[0.6rem] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search Application ID or Police Station...">
-                <div class="col-span-2">
-                    <select id="countries" name="doc_type"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected disabled>Choose Doc Type</option>
-                        <option value="channel" @selected(request()->query('doc_type') == 'channel')>Channel</option>
-                        <option value="general" @selected(request()->query('doc_type') == 'general')>General</option>
-                    </select>
+
+            </div>
+            <div class="">
+                <select id="countries" name="doc_type"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected value="">Choose Doc Type</option>
+                    <option value="channel" @selected(request()->query('doc_type') == 'channel')>Channel</option>
+                    <option value="general" @selected(request()->query('doc_type') == 'general')>General</option>
+                </select>
+            </div>
+            <div>
+                {{-- <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label> --}}
+                <div class="relative flex items-center">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input id="date" name="date_filter" type="date" value="{{ request()->date_filter }}"
+                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Select date">
                 </div>
+            </div>
+            <div class="flex gap-4">
                 <x-btn-primary data-type="search" type="submit" class="">
                     Submit
                 </x-btn-primary>
@@ -437,7 +455,7 @@
                             <td class="px-4 py-3">
                                 <div class="flex items-center space-x-4 text-sm">
                                     <a role="button" data-modal-target="edit-modal" data-modal-toggle="edit-modal"
-                                        hx-get="{{ route('entry.edit', $entry) }}" hx-transition
+                                        hx-get="{{ route('entry.edit', $entry->id) }}" hx-transition
                                         hx-target="#hx-edit-form"
                                         class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                         aria-label="Edit">
@@ -447,7 +465,7 @@
                                             </path>
                                         </svg>
                                     </a>
-                                    <form action="{{ route('entry.destroy', $entry) }}" method="post">
+                                    <form action="{{ route('entry.destroy', $entry->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button

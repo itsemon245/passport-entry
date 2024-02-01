@@ -18,21 +18,22 @@ class EntryController extends Controller
     public function index(Request $request)
     {
         $entries = Entry::with('user')
-            ->orWhereHas('user', function (Builder $q) use ($request) {
-                if ($request->has('query')) {
-                    $q->orWhere('name', $request->query('qeury'));
-                }
-            })
-            ->where(function ($q) use ($request) {
-                if ($request->has('query')) {
+            ->where(function (Builder $q) use ($request) {
+                if (!empty($request->query('query'))) {
                     $q->orWhere('application_id', $request->query('query'));
                     $q->orWhere('police_station', $request->query('query'));
-                }
-                if ($request->has('doc_type')) {
-                    $q->orWhere('doc_type', $request->query('doc_type'));
+                    $q->orWhereHas('user', fn($q2) => $q2->where('name', $request->query('query')));
                 }
             })
-            ->latest()->paginate(10);
+            ->where(function (Builder $q) use ($request) {
+                if (!empty($request->query('doc_type'))) {
+                    $q->orWhere('doc_type', $request->query('doc_type'));
+                }
+                if (!empty($request->query('date_filter'))) {
+                    $q->where('date', $request->query('date_filter'));
+                }
+            })
+            ->latest()->paginate();
         $clients = User::where('is_admin', 0)->get([ 'id', 'name', 'username' ]);
         return view('dashboard.entry.index', compact('entries', 'clients'));
     }
