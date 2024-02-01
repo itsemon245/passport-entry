@@ -23,8 +23,6 @@ jobs:
           git stash
           git config pull.rebase true
           git pull origin main
-          npm i
-          npm run build
           composer update
           php artisan config:cache
           php artisan event:cache 
