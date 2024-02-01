@@ -1,5 +1,4 @@
 <?php
-use NumberFormatter as NF;
 
 function getPoliceStations()
 {
@@ -8,8 +7,7 @@ function getPoliceStations()
     return $json;
 }
 
-function formatNumber(int | float $value)
+function formatNumber($value)
 {
-    $formatter = new NF('en_BD', NF::DEFAULT_STYLE);
-    return $formatter->format($value);
+   return (new \NumberFormatter('en_IN', \NumberFormatter::DEFAULT_STYLE))->format($value);
 }

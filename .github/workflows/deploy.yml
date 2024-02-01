@@ -20,6 +20,7 @@ jobs:
           export GIT_CURL_VERBOSE=1
           eval "$(ssh-agent)"
           ssh-add ~/.ssh/qbsoft_id_25519
+          rm -rf node_modules
           git stash
           git config pull.rebase true
           git pull origin main
@@ -29,7 +30,6 @@ jobs:
           php artisan route:cache
           php artisan view:cache
           php artisan migrate
-          php artisan storage:link
           
 
   
