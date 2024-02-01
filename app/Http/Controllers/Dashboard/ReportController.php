@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Browsershot\Browsershot;
 
 class ReportController extends Controller
 {
@@ -35,18 +33,17 @@ class ReportController extends Controller
             $dateFrom = $request->date_from;
             $dateTo   = $request->date_to;
         } else {
-            $dateTo   = now()->format('Y-m-d');
-            $dateFrom = now()->subDays(now()->day - 1)->format('Y-m-d');
+            $dateTo   = now('Asia/Dhaka')->format('Y-m-d');
+            $dateFrom = now('Asia/Dhaka')->subDays(now()->day - 1)->format('Y-m-d');
         }
         $clients = User::whereHas('entries', function ($q) use ($dateFrom, $dateTo) {
             $q->where('date', '>=', $dateFrom);
             $q->where('date', '<=', $dateTo);
-        })
-            ->with([ 'entries' => function ($q) use ($dateFrom, $dateTo) {
-                $q->where('date', '>=', $dateFrom);
-                $q->where('date', '<=', $dateTo);
-                $q->where('doc_type', '=', 'channel');
-            } ])
+        })->with([ 'entries' => function ($q) use ($dateFrom, $dateTo) {
+            $q->where('date', '>=', $dateFrom);
+            $q->where('date', '<=', $dateTo);
+            $q->where('doc_type', '=', 'channel');
+        } ])
             ->withCount([ 'entries as rowspan' => function ($q) use ($dateFrom, $dateTo) {
                 $q->where('date', '>=', $dateFrom);
                 $q->where('date', '<=', $dateTo);
