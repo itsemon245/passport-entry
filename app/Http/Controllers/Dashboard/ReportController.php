@@ -45,7 +45,7 @@ class ReportController extends Controller
             ->with([ 'entries' => function ($q) use ($dateFrom, $dateTo) {
                 $q->where('date', '>=', $dateFrom);
                 $q->where('date', '<=', $dateTo);
-                // $q->where('doc_type', '=', 'channel');
+                $q->where('doc_type', '=', 'channel');
             } ])
             ->withCount([ 'entries as rowspan' => function ($q) use ($dateFrom, $dateTo) {
                 $q->where('date', '>=', $dateFrom);
