@@ -148,36 +148,59 @@
                     $count = 0;
                 @endphp
                 @forelse ($clients as $key => $client)
-                    @foreach ($client->entries as $index => $entry)
+                    @php
+                        $condition = true;
+                        $i = 0;
+                    @endphp
+                    @while ($condition)
                         @php
-                            $sl = $count + $index + 1;
+                            $sl = $count + $i + 1;
+                            $condition = $i < $client->rowspan;
                         @endphp
                         <tr>
                             <td>{{ $sl }}.</td>
-                            @if ($index == 0)
-                                <td rowspan="{{ $client->entries->count() }}" class="text-left">
+                            @if ($i == 0)
+                                <td rowspan="{{ $client->rowspan > 0 ? $client->rowspan : 1 }}" class="text-left">
                                     <p class="no-padding no-margin">{{ $client->name }}</p>
                                 </td>
-                                <td rowspan="{{ $client->entries->count() }}">
+                                <td rowspan="{{ $client->rowspan > 0 ? $client->rowspan : 1 }}">
                                     {{ $client->channel_count }}
                                 </td>
-                                <td rowspan="{{ $client->entries->count() }}">
+                                <td rowspan="{{ $client->rowspan > 0 ? $client->rowspan : 1 }}">
                                     {{ $client->general_count }}
                                 </td>
                             @endif
-                            <td class="no-padding">
-                                {{ $entry->application_id ?? '-' }}
-                            </td>
-                            <td class="no-padding">
-                                {!! $entry->police_station ?? '<span style="font-weight: 500; font-size: 1.2rem;">-</span>' !!}
-                            </td>
-                            @if ($index == 0)
-                                <td class="no-padding" rowspan="{{ $client->entries->count() }}">IO</td>
+                            @if ($client->rowspan > 0)
+                                @if ($client->rowspan != $i)
+                                    <td class="no-padding">
+                                        {{ $client->entries[$i]->application_id ?? '-' }}
+                                    </td>
+                                    <td class="no-padding">
+                                        {!! $client->entries[$i]->police_station ?? '<span style="font-weight: 500; font-size: 1.2rem;">-</span>' !!}
+                                    </td>
+                                @endif
+                            @else
+                                <td class="no-padding">
+                                    -
+                                </td>
+                                <td class="no-padding">
+                                    -
+                                </td>
+                            @endif
+
+                            @if ($i == 0)
+                                <td class="no-padding" rowspan="{{ $client->rowspan > 0 ? $client->rowspan : 1 }}">IO
+                                </td>
                             @endif
                         </tr>
-                    @endforeach
+                        @php
+                            $i += 1;
+                        @endphp
+                    @endwhile
+
+
                     @php
-                        $count = $key == 0 ? $client->entries->count() : $sl;
+                        $count = $key == 0 ? ($client->rowspan > 0 ? $client->rowspan : 1) : $sl;
                     @endphp
                 @empty
                     <x-tr.no-records colspan="" />

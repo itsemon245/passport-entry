@@ -20,17 +20,6 @@ class ReportController extends Controller
     public function print(Request $request)
     {
         $clients = $this->getClients($request);
-        $time    = str(now())->slug() . "-" . now()->timestamp;
-        // Browsershot::html(view('dashboard.report.pdf', compact('clients'))->render())
-        //     ->setNodeBinary('/home/emon/.nvm/versions/node/v20.10.0/bin/node')
-        //     ->setNpmBinary('/home/emon/.nvm/versions/node/v20.10.0/bin/npm')->savePdf(storage_path('app/public/temp/report.pdf'));
-        // return Storage::download('public/temp/report.pdf', "report-$time.pdf");
-        // Browsershot::html(view('dashboard.report.pdf', compact('clients'))->render())->newHeadless()->save('example.pdf');
-
-        // return Pdf::view('dashboard.report.pdf', compact('clients'))
-        //     ->format('a4')
-        //     ->save("report.pdf");
-        // return $pdf->download();
         return view('dashboard.report.pdf', compact('clients'));
     }
 
@@ -54,6 +43,11 @@ class ReportController extends Controller
             $q->where('date', '<=', $dateTo);
         })
             ->with([ 'entries' => function ($q) use ($dateFrom, $dateTo) {
+                $q->where('date', '>=', $dateFrom);
+                $q->where('date', '<=', $dateTo);
+                // $q->where('doc_type', '=', 'channel');
+            } ])
+            ->withCount([ 'entries as rowspan' => function ($q) use ($dateFrom, $dateTo) {
                 $q->where('date', '>=', $dateFrom);
                 $q->where('date', '<=', $dateTo);
                 $q->where('doc_type', '=', 'channel');
