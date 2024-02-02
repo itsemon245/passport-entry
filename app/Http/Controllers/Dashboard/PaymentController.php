@@ -23,14 +23,12 @@ class PaymentController extends Controller
             $data[ 'total_balance' ] = Payment::whereHas('entry', function ($q) use ($request) {
                 $q->where('date', '>=', $request->query('date_from'));
                 $q->where('date', '<=', $request->query('date_to'));
-            })->where(function ($q) use ($request) {
-                $q->where('payment_type', 'credit');
                 $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
 
             $data[ 'total_paid' ] = Payment::where(function ($q) use ($request) {
-                $q->where('date', '>=', $request->query('date_from'));
-                $q->where('date', '<=', $request->query('date_to'));
+                $q->where('created_at', '>=', $request->query('date_from'));
+                $q->where('created_at', '<=', $request->query('date_to'));
                 $q->where('payment_type', 'debit');
                 $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
