@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Models\Payment;
-use Illuminate\Http\Request;
-use App\Services\PaymentService;
-use App\Http\Controllers\Controller;
 use App\Models\PaymentHistory;
+use App\Models\User;
+use App\Services\PaymentService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
@@ -18,52 +18,60 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $data = [];
+        $data = [  ];
         if ($request->query('user_id') != null) {
-            $data['total_balance'] = Payment::whereHas('entry', function ($q) use ($request) {
-                    $q->where('date', '>=', $request->query('date_from'));
-                    $q->where('date', '<=', $request->query('date_to'));
-                })->where(function ($q) use ($request) {
+            $data[ 'total_balance' ] = Payment::whereHas('entry', function ($q) use ($request) {
+                $q->where('date', '>=', $request->query('date_from'));
+                $q->where('date', '<=', $request->query('date_to'));
+            })->where(function ($q) use ($request) {
                 $q->where('payment_type', 'credit');
-                $q->where('user_id',$request->query('user_id'));
+                $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
 
-            $data['total_paid'] = Payment::where(function ($q) use ($request) {
+            $data[ 'total_paid' ] = Payment::where(function ($q) use ($request) {
                 $q->where('date', '>=', $request->query('date_from'));
                 $q->where('date', '<=', $request->query('date_to'));
                 $q->where('payment_type', 'debit');
-                $q->where('user_id',$request->query('user_id'));
+                $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
-            $data['total_due'] = $data['total_balance'] - $data['total_paid'];
+            $data[ 'total_due' ] = $data[ 'total_balance' ] - $data[ 'total_paid' ];
 
-            $data['general_entry'] = Entry::where([
-                'user_id'=> $request->query('user_id'),
-                'doc_type' => 'general'
-                ])->count();
-            $data['channel_entry'] = Entry::where([
-                'user_id'=> $request->query('user_id'),
-                'doc_type' => 'channel'
-                ])->count();
-
-            $data['general_payment'] = Payment::whereHas('entry', function ($q) use ($request) {
+            $data[ 'general_entry' ] = Entry::where(function ($q) use ($request) {
+                $q->where('date', '>=', $request->query('date_from'));
+                $q->where('date', '<=', $request->query('date_to'));
+                $q->where('user_id', $request->query('user_id'));
                 $q->where('doc_type', 'general');
-            })->where([
-                'user_id'=> $request->query('user_id'),
-                'payment_type'=> 'credit',
-                ])->sum('amount');
+            })->count();
+            $data[ 'channel_entry' ] = Entry::where(function ($q) use ($request) {
+                $q->where('date', '>=', $request->query('date_from'));
+                $q->where('date', '<=', $request->query('date_to'));
+                $q->where('user_id', $request->query('user_id'));
+                $q->where('doc_type', 'channel');
+            })->count();
 
-            $data['channel_payment'] = Payment::whereHas('entry', function ($q) use ($request) {
-                    $q->where('doc_type', 'channel');
-                })->where([
-                'user_id'=> $request->query('user_id'),
-                'payment_type'=> 'credit',
-                ])->sum('amount');
+            $data[ 'general_payment' ] = Payment::whereHas('entry', function ($q) use ($request) {
+                $q->where('doc_type', 'general');
+                $q->where('date', '>=', $request->query('date_from'));
+                $q->where('date', '<=', $request->query('date_to'));
+            })->where([
+                'user_id'      => $request->query('user_id'),
+                'payment_type' => 'credit',
+             ])->sum('amount');
+
+            $data[ 'channel_payment' ] = Payment::whereHas('entry', function ($q) use ($request) {
+                $q->where('doc_type', 'channel');
+                $q->where('date', '>=', $request->query('date_from'));
+                $q->where('date', '<=', $request->query('date_to'));
+            })->where([
+                'user_id'      => $request->query('user_id'),
+                'payment_type' => 'credit',
+             ])->sum('amount');
         }
-        $data = (object)[
-            ...$data
-        ];
+        $data = (object) [
+            ...$data,
+         ];
         $payments = $this->getPaymentHistory($request);
-        $clients = User::where('is_admin', 0)->get(['id', 'name', 'username']);
+        $clients  = User::where('is_admin', 0)->get([ 'id', 'name', 'username' ]);
         return view('dashboard.payment.index', compact('clients', 'data', 'payments'));
     }
 
@@ -81,11 +89,11 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'=> 'required',
-            'total_due'=> 'numeric|required',
-            'amount'=> 'required|numeric|lte:total_due'
-        ]);
-        if($validator->fails()){
+            'user_id'   => 'required',
+            'total_due' => 'numeric|required',
+            'amount'    => 'required|numeric|lte:total_due',
+         ]);
+        if ($validator->fails()) {
             notify()->warning('Amount can\'t be greater than Total Due');
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -96,22 +104,22 @@ class PaymentController extends Controller
         return back();
     }
 
-
-    protected function getPaymentHistory(Request $request) {
+    protected function getPaymentHistory(Request $request)
+    {
         if ($request->query('user_id')) {
-            $payments = PaymentHistory::where(function($q)use($request){
+            $payments = PaymentHistory::where(function ($q) use ($request) {
                 if ($request->query('payment_from')) {
-                    $q->where('date','>=' ,$request->query('payment_from'));
-                    $q->where('date','<=' ,$request->query('payment_to')); 
-                }else{
-                    $q->where('date','>=' ,$request->query('date_from'));
-                    $q->where('date','<=' ,$request->query('date_to'));
+                    $q->where('date', '>=', $request->query('payment_from'));
+                    $q->where('date', '<=', $request->query('payment_to'));
+                } else {
+                    $q->where('date', '>=', $request->query('date_from'));
+                    $q->where('date', '<=', $request->query('date_to'));
                 }
-                    $q->where('user_id', $request->query('user_id'));
+                $q->where('user_id', $request->query('user_id'));
             })
-            ->latest()
-            ->get();
-        }else{
+                ->latest()
+                ->get();
+        } else {
             $payments = null;
         }
 
