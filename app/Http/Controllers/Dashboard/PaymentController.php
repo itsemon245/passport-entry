@@ -34,7 +34,6 @@ class PaymentController extends Controller
                 $q->where('payment_type', 'debit');
                 $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
-            $data[ 'total_due' ] = $data[ 'total_balance' ] - $data[ 'total_paid' ];
 
             $data[ 'general_entry' ] = Entry::where(function ($q) use ($request) {
                 $q->where('date', '>=', $request->query('date_from'));
@@ -53,19 +52,17 @@ class PaymentController extends Controller
                 $q->where('doc_type', 'general');
                 $q->where('date', '>=', $request->query('date_from'));
                 $q->where('date', '<=', $request->query('date_to'));
-            })->where([
-                'user_id'      => $request->query('user_id'),
-                'payment_type' => 'credit',
-             ])->sum('amount');
+                $q->where('user_id', $request->query('user_id'));
+            })->sum('amount');
 
             $data[ 'channel_payment' ] = Payment::whereHas('entry', function ($q) use ($request) {
                 $q->where('doc_type', 'channel');
                 $q->where('date', '>=', $request->query('date_from'));
                 $q->where('date', '<=', $request->query('date_to'));
-            })->where([
-                'user_id'      => $request->query('user_id'),
-                'payment_type' => 'credit',
-             ])->sum('amount');
+                $q->where('user_id', $request->query('user_id'));
+            })->sum('amount');
+            $data[ 'total_due' ] = $data[ 'channel_payment' ] + $data[ 'general_payment' ];
+
         }
         $data = (object) [
             ...$data,
