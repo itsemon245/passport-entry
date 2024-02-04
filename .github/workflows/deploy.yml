@@ -25,7 +25,7 @@ jobs:
           git config pull.rebase true
           git pull origin main
           composer update
-          php artisan config:cache
+          php artisan optimize:clear
           php artisan event:cache 
           php artisan route:cache
           php artisan view:cache
