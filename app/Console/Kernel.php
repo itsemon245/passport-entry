@@ -12,9 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        if (app()->environment('local')) {
-            $schedule->command('telescope:prune')->daily();
-        }
+        $schedule->command('backup:run --only-db')->daily()->at('20:05');
+        $schedule->command('backup:clean')->weekly()->at('03:00');
         
         // $schedule->command('inspire')->hourly();
     }
