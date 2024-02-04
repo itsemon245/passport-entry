@@ -265,7 +265,7 @@
                                                     <div>{{ $payment->payment_method }}</div>
                                                 </td>
                                                 <td class="px-4 py-3">
-                                                    <a role="button" hx-get="{{ route('payment.delete', $payment->payment_id) }}" hx-swap="delete" hx-target="closest tr"
+                                                    <a role="button" hx-get="{{ route('payment.delete', $payment) }}" hx-swap="delete" hx-target="closest tr"
                                                         class="w-max flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                                         aria-label="Delete">
                                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"

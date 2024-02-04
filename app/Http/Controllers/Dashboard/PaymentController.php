@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Models\Payment;
-use App\Models\PaymentHistory;
 use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
@@ -102,15 +101,16 @@ class PaymentController extends Controller
     protected function getPaymentHistory(Request $request)
     {
         if ($request->query('user_id')) {
-            $payments = PaymentHistory::where(function ($q) use ($request) {
+            $payments = Payment::where(function ($q) use ($request) {
                 if ($request->query('payment_from')) {
-                    $q->where('date', '>=', $request->query('payment_from'));
-                    $q->where('date', '<=', $request->query('payment_to'));
+                    $q->where('created_at', '>=', $request->query('payment_from'));
+                    $q->where('created_at', '<=', $request->query('payment_to'));
                 } else {
-                    $q->where('date', '>=', $request->query('date_from'));
-                    $q->where('date', '<=', $request->query('date_to'));
+                    $q->where('created_at', '>=', $request->query('date_from'));
+                    $q->where('created_at', '<=', $request->query('date_to'));
                 }
                 $q->where('user_id', $request->query('user_id'));
+                $q->where('payment_type', 'debit');
             })
                 ->latest()
                 ->get();
