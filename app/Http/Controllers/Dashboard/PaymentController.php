@@ -7,6 +7,7 @@ use App\Models\Entry;
 use App\Models\Payment;
 use App\Models\User;
 use App\Services\PaymentService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,8 +27,8 @@ class PaymentController extends Controller
             })->sum('amount');
 
             $data[ 'total_paid' ] = Payment::where(function ($q) use ($request) {
-                $q->where('created_at', '>=', $request->query('date_from'));
-                $q->where('created_at', '<=', $request->query('date_to'));
+                $q->whereDate('created_at', '>=', $request->query('date_from'));
+                $q->whereDate('created_at', '<=', $request->query('date_to'));
                 $q->where('payment_type', 'debit');
                 $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
@@ -101,13 +102,13 @@ class PaymentController extends Controller
     protected function getPaymentHistory(Request $request)
     {
         if ($request->query('user_id')) {
-            $payments = Payment::where(function ($q) use ($request) {
+            $payments = Payment::where(function (Builder $q) use ($request) {
                 if ($request->query('payment_from')) {
-                    $q->where('created_at', '>=', $request->query('payment_from'));
-                    $q->where('created_at', '<=', $request->query('payment_to'));
+                    $q->whereDate('created_at', '>=', $request->query('payment_from'));
+                    $q->whereDate('created_at', '<=', $request->query('payment_to'));
                 } else {
-                    $q->where('created_at', '>=', $request->query('date_from'));
-                    $q->where('created_at', '<=', $request->query('date_to'));
+                    $q->whereDate('created_at', '>=', $request->query('date_from'));
+                    $q->whereDate('created_at', '<=', $request->query('date_to'));
                 }
                 $q->where('user_id', $request->query('user_id'));
                 $q->where('payment_type', 'debit');
