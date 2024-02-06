@@ -20,8 +20,63 @@
     </script>
 @endsection
 
+@section('actions')
+    <!-- Modal toggle -->
+    {{-- <button
+        class="block text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+        type="button">
+        Toggle modal
+    </button>
+
+    <!-- Main modal -->
+    <div id="default-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Terms of Service
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="default-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        With less than a month to go before the European Union enacts new consumer privacy laws for its
+                        citizens, companies around the world are updating their terms of service agreements to comply.
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is
+                        meant to ensure a common set of data rights in the European Union. It requires organizations to
+                        notify users as soon as possible of high-risk data breaches that could personally affect them.
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button data-modal-hide="default-modal" type="button"
+                        class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">I
+                        accept</button>
+                    <button data-modal-hide="default-modal" type="button"
+                        class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-purple-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+@endsection
 
 @section('content')
+
     <div class="w-full overflow-hidden rounded-lg shadow-xs bg-white p-4">
         <div class="w-full overflow-x-auto">
             <form action="{{ route('payment.store') }}" method="post">
@@ -38,8 +93,6 @@
                                 </option>
                             @endforeach
                         </select>
-
-
                     </div>
                 </div>
 
@@ -59,7 +112,7 @@
                             <input hx-get="{{ route('payment.index') }}" hx-target="#hx-target" hx-select="#hx-target"
                                 hx-include="[type='date'],[name='user_id']" id="date_from" name="date_from" type="date"
                                 value="{{ today()->subDays(today()->day - 1)->format('Y-m-d') }}"
-                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                 placeholder="Select date From">
                         </div>
                     </div>
@@ -79,7 +132,7 @@
                             <input hx-get="{{ route('payment.index') }}" hx-target="#hx-target" hx-select="#hx-target"
                                 hx-include="[type='date'],[name='user_id']" id="date_to" name="date_to" type="date"
                                 value="{{ today('Asia/Dhaka')->format('Y-m-d') }}"
-                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                 placeholder="Select date To">
                         </div>
                     </div>
@@ -121,8 +174,10 @@
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                <th class="px-4 py-3 text-center border border-slate-300" colspan="2">Number of Docs</th>
-                                <th class="px-4 py-3 text-center border border-slate-300" colspan="2">Payment Amount</th>
+                                <th class="px-4 py-3 text-center border border-slate-300" colspan="2">Number of Docs
+                                </th>
+                                <th class="px-4 py-3 text-center border border-slate-300" colspan="2">Payment Amount
+                                </th>
                                 <th class="px-4 py-3 text-center border border-slate-300">Total Payable Amount</th>
                                 <th class="px-4 py-3 text-center border border-slate-300">Now Paying</th>
                             </tr>
@@ -132,9 +187,11 @@
 
                                 <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">Channel</td>
                                 <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">General</td>
-                                <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">Channel Payment
+                                <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">Channel
+                                    Payment
                                 </td>
-                                <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">General Payment
+                                <td class="px-4 py-1 text-sm capitalize text-center border border-slate-300">General
+                                    Payment
                                 </td>
                                 <td class="px-4 py-1 text-lg capitalize text-center border border-slate-300" rowspan="2">
                                     {{ $data->total_due ?? 0 }} <x-heroicon-o-currency-bangladeshi
@@ -142,7 +199,7 @@
                                 </td>
                                 <td class="px-4 py-1 text-lg capitalize text-center border border-slate-300" rowspan="2">
                                     <input type="number" name="amount"
-                                        class="payment-data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        class="payment-data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                         placeholder="Paying Amount">
                                 </td>
                             </tr>
@@ -168,7 +225,7 @@
                                 <label for="client" class="text-sm font-medium text-gray-900 dark:text-white">Select
                                     Payment Method</label>
                                 <select name="payment_method"
-                                    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
                                     <option value="cash" selected>Cash</option>
                                     <option value="bkash">Bkash</option>
                                     <option value="discount">Discount</option>
@@ -182,6 +239,8 @@
 
 
                     @if (request()->query('user_id'))
+
+                    
                         <div class="my-3" x-data>
                             <h3 class="text-center text-lg font-medium p-4">Payment History</h3>
 
@@ -206,8 +265,8 @@
                                             hx-target="#hx-payment-history" hx-swap="outerHTML"
                                             hx-include="[type='date'],[name='user_id']" id="payment_from"
                                             name="payment_from" type="date"
-                                            value="{{ request()->query('payment_from') ??today()->subDays(today()->day - 1)->format('Y-m-d') }}"
-                                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value="{{request()->has('payment_from') ? request()->query('payment_from') ?? today()->subDays(today()->day - 1)->format('Y-m-d') : request()->query('date_from') }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                             placeholder="Select date From">
                                     </div>
                                 </div>
@@ -230,9 +289,9 @@
                                             hx-target="#hx-payment-history" hx-swap="outerHTML"
                                             hx-include="[type='date'],[name='user_id']" id="payment_to" name="payment_to"
                                             type="date"
-                                            value="{{ request()->query('payment_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}"
-                                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Select date To">
+                                            value="{{ request()->has('payment_to') ? (request()->query('payment_to') ?? today('Asia/Dhaka')->format('Y-m-d')) : request()->query('date_to') }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
+                                            placeholder="Select date">
                                     </div>
                                 </div>
                             </div>
@@ -265,16 +324,32 @@
                                                     <div>{{ $payment->payment_method }}</div>
                                                 </td>
                                                 <td class="px-4 py-3">
-                                                    <a role="button" hx-get="{{ route('payment.delete', $payment) }}" hx-swap="delete" hx-target="closest tr"
-                                                        class="w-max flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                                        aria-label="Delete">
-                                                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                                            viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd"
-                                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                                                clip-rule="evenodd"></path>
-                                                        </svg>
-                                                    </a>
+                                                    <div class="flex gap-4 items-center">
+                                                        <a href="{{route('payment.edit', $payment)}}"
+                                                            {{-- hx-get="{{ route('payment.edit', $payment) }}" hx-transition --}} hx-target="#hx-edit-form"
+                                                            hx-swap="outerHTML"
+                                                            class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                                            aria-label="Edit">
+                                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path
+                                                                    d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
+                                                                </path>
+                                                            </svg>
+                                                        </a>
+                                                        <a role="button"
+                                                            hx-get="{{ route('payment.delete', $payment) }}"
+                                                            hx-swap="delete" hx-target="closest tr"
+                                                            class="w-max flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                                            aria-label="Delete">
+                                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                                    clip-rule="evenodd"></path>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
                                                 </td>
 
                                             </tr>

@@ -134,7 +134,8 @@ class PaymentController extends Controller
      */
     public function edit(Payment $payment)
     {
-        //
+        $clients = User::where('is_admin', 0)->get(['id', 'name']);
+        return view('dashboard.payment.partials.edit', compact('payment', 'clients'));
     }
 
     /**
@@ -142,7 +143,22 @@ class PaymentController extends Controller
      */
     public function update(Request $request, Payment $payment)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'user_id'   => 'required',
+            'amount'    => 'required|numeric',
+         ]);
+        if ($validator->fails()) {
+            notify()->warning('Amount can\'t be greater than Total Due');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $validator->validate();
+        $payment->update([
+            'user_id'=> $request->user_id,
+            'amount'=> $request->amount,
+            'created_at'=> $request->date
+        ]);
+        notify()->success('Payment Updated Successfully!');
+        return redirect(route('payment.index'));
     }
 
     /**
