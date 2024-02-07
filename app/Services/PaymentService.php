@@ -19,7 +19,7 @@ class PaymentService
             'entry_id'=> null,
             'amount'=> $amount,
             'payment_type'=> 'debit',
-            'balance'=> ($lastBalance - $amount)
+            // 'balance'=> ($lastBalance - $amount)
         ]);
         $this->history($payment);
         return $payment;
@@ -35,7 +35,7 @@ class PaymentService
             'entry_id'=> $entry->id,
             'amount'=> $amount,
             'payment_type'=> 'credit',
-            'balance'=> ($lastBalance + $amount)
+            // 'balance'=> ($lastBalance + $amount)
         ]);
         
     }
