@@ -14,6 +14,18 @@ class ReportController extends Controller
         // dd($clients);
         return view('dashboard.report.index', compact('clients'));
     }
+    public function clientWise(Request $request)
+    {
+        $user    = User::find($request->user_id) ?? User::where('is_admin', 0)->first();
+        $clients = User::where('is_admin', 0)->get();
+        $entries = $user->entries()->orderBy('date', 'desc')->get()->groupBy([
+            'date',
+            function ($item) {
+                return $item[ 'doc_type' ];
+            },
+         ], $preserveKeys = false);
+        return view('dashboard.report.clientwise', compact('clients', 'entries', 'user'));
+    }
 
     public function print(Request $request)
     {
