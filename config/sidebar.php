@@ -26,4 +26,9 @@ return [
         'icon' => '<x-heroicon-o-currency-bangladeshi class="w-5 h-5"/>',
         'isAdminOnly'=> true
     ],
+    'Payment History' => (object)[
+        "name" => 'payment.history',
+        'icon' => '<x-heroicon-o-clock class="w-5 h-5"/>',
+        'isAdminOnly'=> true
+    ],
 ];

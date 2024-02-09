@@ -20,4 +20,5 @@ Route::prefix('dashboard')
         Route::get('report/print', [ ReportController::class, 'print' ])->name('report.print');
         Route::get('report/download/csv', [ ReportController::class, 'downloadCsv' ])->name('report.download.csv');
         Route::get('payment/{payment}/destroy', [ PaymentController::class, 'destroy' ])->name('payment.delete');
+        Route::get('payment-history', [ PaymentController::class, 'history' ])->name('payment.history');
     });

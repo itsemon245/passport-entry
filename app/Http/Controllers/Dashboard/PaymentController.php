@@ -59,7 +59,7 @@ class PaymentController extends Controller
                 $q->where('date', '<=', $request->query('date_to'));
                 $q->where('user_id', $request->query('user_id'));
             })->sum('amount');
-            $data[ 'total_due' ] = $data[ 'channel_payment' ] + $data[ 'general_payment' ] - $data['total_paid'];
+            $data[ 'total_due' ] = $data[ 'channel_payment' ] + $data[ 'general_payment' ] - $data[ 'total_paid' ];
 
         }
         $data = (object) [
@@ -125,9 +125,17 @@ class PaymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Payment $payment)
+    public function history(Request $request)
     {
-        //
+        $paymentFrom = $request->has('payment_from') ? $request->payment_from : today()->subDays(today()->day - 1)->format('Y-m-d');
+        $paymentTo   = $request->has('payment_to') ? $request->payment_to : today()->format('Y-m-d');
+        $payments    = Payment::where(function (Builder $q) use ($paymentFrom, $paymentTo) {
+            $q->whereDate('created_at', '>=', $paymentFrom);
+            $q->whereDate('created_at', '<=', $paymentTo);
+            $q->where('payment_type', 'debit');
+        })->with('user')
+            ->latest()->paginate();
+        return view('dashboard.payment.partials.history', compact('payments'));
     }
 
     /**
@@ -135,7 +143,7 @@ class PaymentController extends Controller
      */
     public function edit(Payment $payment)
     {
-        $clients = User::where('is_admin', 0)->get(['id', 'name']);
+        $clients = User::where('is_admin', 0)->get([ 'id', 'name' ]);
         return view('dashboard.payment.partials.edit', compact('payment', 'clients'));
     }
 
@@ -145,8 +153,8 @@ class PaymentController extends Controller
     public function update(Request $request, Payment $payment)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'   => 'required',
-            'amount'    => 'required|numeric',
+            'user_id' => 'required',
+            'amount'  => 'required|numeric',
          ]);
         if ($validator->fails()) {
             notify()->warning('Amount can\'t be greater than Total Due');
@@ -154,10 +162,10 @@ class PaymentController extends Controller
         }
         $validator->validate();
         $payment->update([
-            'user_id'=> $request->user_id,
-            'amount'=> $request->amount,
-            'created_at'=> $request->date
-        ]);
+            'user_id'    => $request->user_id,
+            'amount'     => $request->amount,
+            'created_at' => $request->date,
+         ]);
         notify()->success('Payment Updated Successfully!');
         return redirect(route('payment.index'));
     }
