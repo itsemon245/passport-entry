@@ -4,6 +4,11 @@
 :root{
     font-size: larger;
 }
+@media print {
+    :root{
+        font-size: large;
+    }
+}
 
 .hide-date-icon[type="date"]::-webkit-inner-spin-button,
 .hide-date-icon[type="date"]::-webkit-calendar-picker-indicator {

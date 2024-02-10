@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -16,15 +17,22 @@ class ReportController extends Controller
     }
     public function clientWise(Request $request)
     {
-        $user    = User::find($request->user_id) ?? User::where('is_admin', 0)->first();
-        $clients = User::where('is_admin', 0)->get();
-        $entries = $user->entries()->orderBy('date', 'desc')->get()->groupBy([
+        $user     = User::find($request->user_id) ?? User::where('is_admin', 0)->first();
+        $dateFrom = $request->date_from ?? today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d');
+        $dateTo   = $request->date_to ?? today('Asia/Dhaka')->format('Y-m-d');
+        $clients  = User::where('is_admin', 0)->get();
+        $entries  = $user->entries()
+            ->where(function (Builder $q) use ($dateFrom, $dateTo) {
+                $q->where('date', '>=', $dateFrom);
+                $q->where('date', '<=', $dateTo);
+            })
+            ->orderBy('date', 'desc')->get()->groupBy([
             'date',
             function ($item) {
                 return $item[ 'doc_type' ];
             },
          ], $preserveKeys = false);
-        return view('dashboard.report.clientwise', compact('clients', 'entries', 'user'));
+        return view('dashboard.report.clientwise', compact('clients', 'entries', 'user', 'dateFrom', 'dateTo'));
     }
 
     public function print(Request $request)
