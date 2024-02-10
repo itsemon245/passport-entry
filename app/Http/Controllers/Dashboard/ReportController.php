@@ -17,7 +17,11 @@ class ReportController extends Controller
     }
     public function clientWise(Request $request)
     {
-        $user     = User::find($request->user_id) ?? User::where('is_admin', 0)->first();
+        if (auth()->user()->is_admin) {
+            $user = User::find($request->user_id) ?? User::where('is_admin', 0)->first();
+        } else {
+            $user = User::find(auth()->id());
+        }
         $dateFrom = $request->date_from ?? today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d');
         $dateTo   = $request->date_to ?? today('Asia/Dhaka')->format('Y-m-d');
         $clients  = User::where('is_admin', 0)->get();
