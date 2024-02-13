@@ -26,11 +26,11 @@
 </head>
 
 <body>
-    <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
+    <div class="flex h-screen bg-gray-50 print:bg-none dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
         @include('layouts.sidebar')
         <div class="flex flex-col flex-1 w-full">
             @include('layouts.header')
-            <main class="h-full overflow-y-auto">
+            <main class="h-full">
                 <div class="container px-6 print:px-0 mx-auto grid mb-10">
                     <div class="flex gap-4 items-center mt-5 print:hidden">
                         <!-- Modal toggle -->

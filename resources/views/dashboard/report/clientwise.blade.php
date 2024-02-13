@@ -116,7 +116,10 @@
             <div class="w-full rounded-lg print:rounded-none shadow-xs print:shadow-none">
                 <div class="w-full">
                     <table class="print:w-max print:mx-auto w-full" id="printable">
-                        <thead>
+                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                            @php
+                                $key = 0;
+                            @endphp
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-700 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th rowspan="2" class="px-4 text-center border py-1 print:px-2">No.</th>
@@ -130,11 +133,6 @@
                                 <th class="px-4 text-center border py-1 print:px-2">Channel</th>
                                 <th class="px-4 text-center border py-1 print:px-2">General</th>
                             </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            @php
-                                $key = 0;
-                            @endphp
                             @forelse ($entries as $date => $items)
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="align-middle text-center border">{{ ++$key }}</td>
