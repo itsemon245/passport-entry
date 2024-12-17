@@ -13,7 +13,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.PORT }}
         command_timeout: 30m
-        script: | 
+        script: |
           cd ${{secrets.PROJECT_DIR}}
           export GIT_TRACE_PACKET=1
           export GIT_TRACE=1
@@ -24,10 +24,9 @@ jobs:
           git pull origin main
           composer update
           php artisan optimize:clear
-          php artisan event:cache 
           php artisan route:cache
           php artisan view:cache
-          php artisan migrate
-          
+          php artisan migrate --force
 
-  
+
+
