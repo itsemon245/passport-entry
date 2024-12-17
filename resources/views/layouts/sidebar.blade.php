@@ -6,7 +6,7 @@
         </a>
         <ul>
             @foreach (config('sidebar') as $item => $route)
-                @if (auth()->user()->is_admin)
+                @if (str(auth()->user()->role)->contains(['staff', 'admin']))
                    @if(!$route->isUserOnly)
                         <li class="relative px-6 py-3">
                         @if (request()->routeIs($route->name))

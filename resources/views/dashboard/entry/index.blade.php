@@ -49,14 +49,17 @@
 @endsection
 
 @section('actions')
-    <div class="flex-grow">
-        <x-btn-primary data-modal-target="create-modal" data-modal-toggle="create-modal">
-            <x-heroicon-o-plus class="w-5 h-5" />
-            New Entry
-        </x-btn-primary>
-    </div>
+    @if(auth()->user()->is_admin)
+        <div class="flex-grow">
+            <x-btn-primary data-modal-target="create-modal" data-modal-toggle="create-modal">
+                <x-heroicon-o-plus class="w-5 h-5" />
+                    New Entry
+            </x-btn-primary>
+        </div>
 
-    <div class="" x-data="">
+    @endif
+
+    <div x-data="">
         <form class="grid lg:grid-cols-5 gap-4" action="{{ route('entry.index') }}" method="GET"
             hx-target="#hx-search-target" hx-select="#hx-search-target" hx-swap="outerHTML" class="w-full">
             <div class="relative items-center gap-2.5">
@@ -417,7 +420,9 @@
                         <th class="px-4 py-3">Document Type</th>
                         <th class="px-4 py-3">Application ID</th>
                         <th class="px-4 py-3">Police Station</th>
-                        <th class="px-4 py-3">Action</th>
+                        @if (auth()->user()->is_admin)
+                            <th class="px-4 py-3">Action</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -452,7 +457,8 @@
                             <td class="px-4 py-3 text-sm capitalize">
                                 {{ $entry->police_station }}
                             </td>
-                            <td class="px-4 py-3">
+                            @if (auth()->user()->is_admin)
+                                                            <td class="px-4 py-3">
                                 <div class="flex items-center space-x-4 text-sm">
                                     <a role="button" data-modal-target="edit-modal" data-modal-toggle="edit-modal"
                                         hx-get="{{ route('entry.edit', $entry->id) }}" hx-transition
@@ -481,6 +487,7 @@
                                     </form>
                                 </div>
                             </td>
+                        @endif
                         </tr>
                     @empty
                         <x-tr.no-records colspan="7" />

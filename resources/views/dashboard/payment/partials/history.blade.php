@@ -119,7 +119,7 @@
 
                             </tr>
                         @empty
-                            <x-tr.no-records colspan="5" />
+                            <x-tr.no-records colspan="6" />
                         @endforelse
                     @endif
                 </tbody>

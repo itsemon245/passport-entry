@@ -27,7 +27,7 @@ class ClientController extends Controller {
             ...$request->except( '_token' ),
             'avatar' => $avatar,
         ] );
-        notify()->success( 'Client created successfully!' );
+        notify()->success( ucwords($request->role).' created successfully!' );
         return back();
     }
     public function update(Request $request, User $client) {
