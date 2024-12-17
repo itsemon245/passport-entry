@@ -186,7 +186,7 @@
                                     Name</label>
                                 <select id="client" name="user_id" class="tail-select !w-full">
                                     @foreach ($clients as $client)
-                                        <option value="{{ $client->id }}" @selected(old('user_id') == $client->id)>
+                                        <option value="{{ $client->id }}" @selected(old('user_id') == $client->id || (session('request')['user_id'] ?? '') == $client->id )>
                                             {{ $client->name }}
                                         </option>
                                     @endforeach
@@ -204,7 +204,7 @@
                                     Station</label>
                                 <select id="police_station" name="police_station" class="tail-select !w-full">
                                     @foreach (getPoliceStations() as $station)
-                                        <option value="{{ $station->name }}"@selected(old('police_station') == $station->name)>
+                                        <option value="{{ $station->name }}"@selected(old('police_station') == $station->name || (session('request')['police_station'] ?? '') == $station->name)>
                                             {{ $station->name }}
                                         </option>
                                     @endforeach
@@ -223,9 +223,9 @@
                                     let m = (new Date().getMinutes()).toString()
                                     d = d.length < 2 ? '0' + d : d
                                     m = m.length < 2 ? '0' + m : m
-                                
+
                                     $el.value = d + ':' + m
-                                
+
                                 }" id="time" name="time"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
                                     placeholder="Time">
@@ -359,9 +359,9 @@
                                     let m = (new Date().getMinutes()).toString()
                                     d = d.length < 2 ? '0' + d : d
                                     m = m.length < 2 ? '0' + m : m
-                                
+
                                     $el.value = d + ':' + m
-                                
+
                                 }" id="time" name="time"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Time">

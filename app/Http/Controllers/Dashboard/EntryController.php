@@ -35,7 +35,7 @@ class EntryController extends Controller
             })
             ->latest()->paginate();
         $clients = User::where('is_admin', 0)->get([ 'id', 'name', 'username' ]);
-        return view('dashboard.entry.index', compact('entries', 'clients'));
+        return view('dashboard.entry.index', compact('entries', 'clients'))->with('request', session()->get('request'));
     }
 
     /**
@@ -92,7 +92,7 @@ class EntryController extends Controller
         }
 
         notify()->success('Entry submitted successfully!');
-        return redirect()->route('entry.index');
+        return redirect()->route('entry.index')->with('request', $request->all());
     }
 
     /**
