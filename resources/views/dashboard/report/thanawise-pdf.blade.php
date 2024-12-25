@@ -136,7 +136,7 @@
                     <th>No.</th>
                     <th colspan="2" class="text-center">IO Name</th>
                     <th>Channel</th>
-                    <th>Channel</th>
+                    <th>General</th>
                     <th>Total</th>
                 </tr>
                 @php
@@ -149,15 +149,17 @@
                     @php
                         $count++;
                     @endphp
-                    @foreach ($clients as $client)
+                    @foreach ($clients as $i => $client)
                         @php
                             $totalChannel += $client->channel_count;
                             $totalGeneral += $client->general_count;
                             $total += $client->channel_count + $client->general_count;
                         @endphp
                         <tr>
-                            <td rowspan="{{ $clients->count() }}">{{ $count }}</td>
-                            <td rowspan="{{ $clients->count() }}" class="text-center">{{ $thana }}</td>
+                            @if ($i == 0)
+                                <td rowspan="{{ $clients->count() }}">{{ $count }}</td>
+                                <td rowspan="{{ $clients->count() }}" class="text-center">{{ $thana }}</td>
+                            @endif
                             <td class="text-left">
                                 <p class="no-padding no-margin">{{ $client->name }}</p>
                             </td>
