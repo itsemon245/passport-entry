@@ -18,6 +18,7 @@ Route::prefix('dashboard')
         Route::resource('payment', PaymentController::class)->except('destroy');
         Route::resource('report', ReportController::class)->only('index');
         Route::get('report/print', [ ReportController::class, 'print' ])->name('report.print');
+        Route::get('report/thanawise-print', [ ReportController::class, 'printThanawise' ])->name('report.print.thanawise');
         Route::get('report/download/csv', [ ReportController::class, 'downloadCsv' ])->name('report.download.csv');
         Route::get('report-client-wise', [ ReportController::class, 'clientWise' ])->name('report.client');
         Route::get('payment/{payment}/destroy', [ PaymentController::class, 'destroy' ])->name('payment.delete');

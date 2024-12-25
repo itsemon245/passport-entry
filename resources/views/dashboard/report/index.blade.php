@@ -7,13 +7,22 @@
 @endsection
 
 @section('content')
-    <div class="flex gap-2 2xl:gap-8 justify-center items-center mb-2 lg:-mt-12 !print:hidden">
+    <div class="flex gap-2 2xl:gap-8 justify-center items-center mb-2 lg:-mt-12 !print:hidden" x-data="{
+                    dateFrom: '{{ today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}',
+                    dateTo: '{{ today('Asia/Dhaka')->format('Y-m-d') }}',
+                    get printUrl(){
+                        return `/dashboard/report/print?date_from=${this.dateFrom}&date_to=${this.dateTo}`
+                    },
+                    get thanawisePrintUrl(){
+                        return `/dashboard/report/thanawise-print?date_from=${this.dateFrom}&date_to=${this.dateTo}`
+                    }
+            }">
         <a href="{{ route('report.client')}}"
             role="button"
             class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Client Wise</a>
         <form x-ref="form"
             class="flex max-sm:flex-col max-md:flex-wrap  gap-2 2xl:gap-8 justify-center items-center !print:hidden"
-            action="{{ route('report.index') }}" method="get" x-data="{ dateFrom: '{{ today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}', dateTo: '{{ today('Asia/Dhaka')->format('Y-m-d') }}' }">
+            action="{{ route('report.index') }}" method="get" >
 
             <div class="print:hidden">
                 <label for="date_from" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
@@ -27,9 +36,8 @@
                         </svg>
                     </div>
                     <input
-                        @change="dateFrom = $el.value; $refs.print.href = `/dashboard/report/print?date_from=${dateFrom}&date_to=${dateTo}`"
+                        x-model="dateFrom"
                         id="date_from" name="date_from" type="date"
-                        value="{{ request()->query('date_from') ??today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}"
                         class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date From">
                 </div>
@@ -46,9 +54,8 @@
                         </svg>
                     </div>
                     <input
-                        @change="dateTo = $el.value; $refs.print.href = `/dashboard/report/print?date_from=${dateFrom}&date_to=${dateTo}`"
                         id="date_to" name="date_to" type="date"
-                        value="{{ request()->query('date_to') ?? today('Asia/Dhaka')->format('Y-m-d') }}"
+                        x-model="dateTo"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date To">
                 </div>
@@ -65,9 +72,10 @@
             $dateTo = empty(request()->query('date_to')) ? today('Asia/Dhaka')->format('Y-m-d') : request()->query('date_to');
         @endphp
 
-        <a x-ref="print" target="_blank" href="{{ route('report.print') . "?date_from={$dateFrom}&date_to={$dateTo}" }}"
-            role="button"
+        <a x-ref="print" target="_blank" :href="printUrl" role="button"
             class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Print</a>
+        <a x-ref="print" target="_blank" :href="thanawisePrintUrl" role="button"
+            class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Thanawise Print</a>
         {{-- <a x-ref="print" href="{{route('report.download.csv')."?date_from={$dateFrom}&date_to={$dateTo}"}}" role="button" class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-600 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Download</a> --}}
     </div>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">

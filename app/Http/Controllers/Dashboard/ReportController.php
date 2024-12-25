@@ -44,12 +44,19 @@ class ReportController extends Controller
         $clients = $this->getClients($request);
         return view('dashboard.report.pdf', compact('clients'));
     }
+    public function printThanawise(Request $request)
+    {
+        $clients = $this->getClients($request);
+        $thanas = $clients->groupBy('police_station');
+        return view('dashboard.report.thanawise-pdf', compact('thanas'));
+    }
 
     public function downloadCsv(Request $request)
     {
         $clients = $this->getClients($request);
         $clients->toCsv();
     }
+
 
     protected function getClients(Request $request)
     {
@@ -82,9 +89,7 @@ class ReportController extends Controller
                 $q->where('date', '>=', $dateFrom);
                 $q->where('date', '<=', $dateTo);
                 $q->where('doc_type', '=', 'general');
-            } ])
-            ->get();
-
+            }])->get();
         return $clients;
     }
 }

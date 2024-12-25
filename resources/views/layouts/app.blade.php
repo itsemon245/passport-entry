@@ -20,9 +20,6 @@
         integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous">
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-
-
 </head>
 
 <body>
