@@ -52,7 +52,7 @@ class ReportController extends Controller
             $q->where('date', '<=', $request->date_to);
         })
         ->whereNot('police_station', 'Sadar')
-        ->select('user_id', 'police_station', 'doc_type')
+        ->select('user_id', 'police_station', 'doc_type', 'remarks')
         ->orderBy('police_station')
         ->with('user')
         ->get();
@@ -67,6 +67,8 @@ class ReportController extends Controller
                     $item[0]->user->name => (object)[
                         'channel_count' => $item->where('doc_type', '=', 'channel')->count(),
                         'general_count' => $item->where('doc_type', '=', 'general')->count(),
+                        'negative_count' => $item->where('remarks', '=', 'negative')->count(),
+                        'second_time_count' => $item->where('remarks', '=', 'second_time')->count(),
                         'rowspan'       => $item->count(),
                     ]
                 ];

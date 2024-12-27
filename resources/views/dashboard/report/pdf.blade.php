@@ -196,7 +196,12 @@
                                     </td>
                                 @endif
                                 <td class="no-padding">
-                                    {{ $entry->application_id ?? '-' }}
+                                    <span>
+                                        {{ $entry->application_id ?? '-' }}
+                                    </span>
+                                    @if ($entry->remarks)
+                                        <span class="italic">({{ $entry->remarks }})</span>
+                                    @endif
                                 </td>
                                 <td class="no-padding">
                                     {!! $entry->police_station ?? '<span style="font-weight: 500; font-size: 1.2rem;">-</span>' !!}

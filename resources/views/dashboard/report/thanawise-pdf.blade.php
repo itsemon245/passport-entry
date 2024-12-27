@@ -165,6 +165,12 @@
                             </td>
                             <td>
                                 {{ $client->channel_count }}
+                                @if ($client->negative_count > 0)
+                                    <span class="italic">(negative = {{ $client->negative_count }})</span>
+                                @endif
+                                @if ($client->second_time_count > 0)
+                                    <span class="italic">(second_time = {{ $client->second_time_count }})</span>
+                                @endif
                             </td>
                             <td>
                                 {{ $client->general_count }}

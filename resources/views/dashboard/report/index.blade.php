@@ -8,8 +8,8 @@
 
 @section('content')
     <div class="flex gap-2 2xl:gap-8 justify-center items-center mb-2 lg:-mt-12 !print:hidden" x-data="{
-                    dateFrom: '{{ today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}',
-                    dateTo: '{{ today('Asia/Dhaka')->format('Y-m-d') }}',
+                    dateFrom: '{{ request()->date_from ?? today('Asia/Dhaka')->subDays(today()->day - 1)->format('Y-m-d') }}',
+                    dateTo: '{{ request()->date_to ?? today('Asia/Dhaka')->format('Y-m-d') }}',
                     get printUrl(){
                         return `/dashboard/report/print?date_from=${this.dateFrom}&date_to=${this.dateTo}`
                     },
@@ -127,7 +127,13 @@
                                     <table
                                         class="{{ $client->entries->count() == 1 || $i == 0 ? '' : 'border-t' }} w-full">
                                         <tr>
-                                            <td class="text-center px-4 py-1 print:px-2">{{ $entry->application_id }}</td>
+                                            <td class="text-center px-4 py-1 print:px-2">
+                                                <span>{{ $entry->application_id }}</span>
+                                                @if ($entry->remarks)
+                                                    <span class="italic">({{ $entry->remarks }})</span>
+                                                @endif
+                                            </td>
+
                                         </tr>
                                     </table>
                                 @endforeach

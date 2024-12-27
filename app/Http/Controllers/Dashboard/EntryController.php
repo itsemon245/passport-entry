@@ -143,10 +143,10 @@ class EntryController extends Controller
             'time'           => $request->time,
             'application_id' => $request->application_id,
             'police_station' => $request->police_station,
+            'remarks'        => $request->remarks,
         ]);
         if($request->remarks == 'negative' && $oldRemarks != 'negative') {
-            $payment   = new PaymentService;
-            $payment->debit($entry);
+            $entry->payment?->delete();
             notify()->success('Entry marked as negative & Removed from credit');
         }else{
             notify()->success('Entry updated successfully!');
