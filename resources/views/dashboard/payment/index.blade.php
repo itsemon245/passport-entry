@@ -172,7 +172,7 @@
                     <div class="flex justify-end">
                         <div class="flex gap-3 items-end">
                             <div>
-                        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Date</label>
+                        <label for="date" class="block mb-0.5 text-sm font-medium text-gray-900 dark:text-white">Payment Date</label>
                         <div class="relative flex items-center">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
