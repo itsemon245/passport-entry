@@ -11,6 +11,9 @@ class Payment extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $casts = [
+        'date' => 'date:Y-m-d',
+    ];
 
     public function entry()
     {
