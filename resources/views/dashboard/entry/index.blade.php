@@ -252,7 +252,8 @@
                                                              placeholder="Select date">
                             </div>
                         </div>
-                        <div>
+                        <template x-if="isChannel">
+                                                    <div>
                             <label for="remarks"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remarks</label>
                             <select id="remarks" name="remarks" class="select">
@@ -262,6 +263,8 @@
                                 <option value="second_time">Second Time</option>
                             </select>
                         </div>
+
+                        </template>
                     </div>
                     <!-- Modal footer -->
                     <div

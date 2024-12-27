@@ -145,9 +145,15 @@ class EntryController extends Controller
             'police_station' => $request->police_station,
             'remarks'        => $request->remarks,
         ]);
-        if($request->remarks == 'negative' && $oldRemarks != 'negative') {
+        if($request->remarks == 'negative') {
             $entry->payment?->delete();
             notify()->success('Entry marked as negative & Removed from credit');
+        }elseif($oldRemarks == 'nagative'){
+            $payment = new PaymentService;
+            if(!$entry->payment){
+                $payment->credit($entry);
+            }
+            notify()->success('Entry redded to credit');
         }else{
             notify()->success('Entry updated successfully!');
         }
