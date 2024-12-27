@@ -136,7 +136,6 @@ class EntryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $validator->validate();
-        $oldRemarks = $entry->remarks;
         $entry = tap($entry)->update([
             'user_id'        => $request->user_id,
             'date'           => $request->date,
@@ -148,13 +147,12 @@ class EntryController extends Controller
         if($request->remarks == 'negative') {
             $entry->payment?->delete();
             notify()->success('Entry marked as negative & Removed from credit');
-        }elseif($oldRemarks == 'nagative'){
-            $payment = new PaymentService;
-            if(!$entry->payment){
-                $payment->credit($entry);
-            }
-            notify()->success('Entry redded to credit');
         }else{
+            if(!$entry->payment){
+                $payment = new PaymentService;
+                $payment->credit($entry);
+                notify()->success('Entry redded to credit');
+            }
             notify()->success('Entry updated successfully!');
         }
         return redirect()->route('entry.index');
