@@ -87,6 +87,7 @@ class PaymentController extends Controller
             'user_id'   => 'required',
             'total_due' => 'numeric|required',
             'amount'    => 'required|numeric|lte:total_due',
+            'date' => 'required|date',
          ]);
         if ($validator->fails()) {
             notify()->warning('Amount can\'t be greater than Total Due');

@@ -53,6 +53,7 @@
                         <th class="px-4 py-3 text-center">No.</th>
                         <th class="px-4 py-3">Client</th>
                         <th class="px-4 py-3">Payment Date</th>
+                        <th class="px-4 py-3">Entry Date</th>
                         <th class="px-4 py-3">Amount</th>
                         <th class="px-4 py-3">Payment Method</th>
                         <th class="px-4 py-3">Action</th>
@@ -81,8 +82,11 @@
                                     </div>
                                 </td>
                                 <td class="px-4 text-sm py-3">
-                                    <div>{{ $payment->created_at->format('d F, Y') }}
+                                    <div>{{ $payment->date->format('d F, Y') }}
                                     </div>
+                                </td>
+                                <td class="px-4 text-sm py-3">
+                                {{ $payment->created_at->format('d F, Y') }}
                                 </td>
                                 <td class="px-4 text-sm py-3">
                                     <div>{{ $payment->amount }} <x-heroicon-o-currency-bangladeshi
@@ -119,7 +123,7 @@
 
                             </tr>
                         @empty
-                            <x-tr.no-records colspan="6" />
+                            <x-tr.no-records colspan="7" />
                         @endforelse
                     @endif
                 </tbody>

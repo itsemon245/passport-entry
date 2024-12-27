@@ -172,6 +172,24 @@
                     <div class="flex justify-end">
                         <div class="flex gap-3 items-end">
                             <div>
+                        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Date</label>
+                        <div class="relative flex items-center">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input
+                                id="date"
+                                name="date" type="date"
+                                value="{{ today('Asia/Dhaka')->format('Y-m-d') }}"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
+                                placeholder="Select date">
+                        </div>
+                    </div>
+                            <div>
                                 <label for="client" class="text-sm font-medium text-gray-900 dark:text-white">Select
                                     Payment Method</label>
                                 <select name="payment_method"
@@ -251,6 +269,7 @@
                                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                         <th class="px-4 py-3 text-center">No.</th>
                                         <th class="px-4 py-3">Payment Date</th>
+                                        <th class="px-4 py-3">Entry Date</th>
                                         <th class="px-4 py-3">Amount</th>
                                         <th class="px-4 py-3">Payment Method</th>
                                         <th class="px-4 py-3">Action</th>
@@ -262,8 +281,10 @@
                                             <tr class="text-gray-700 dark:text-gray-400">
                                                 <td class="align-middle text-center">{{ ++$key }}</td>
                                                 <td class="px-4 text-sm py-3">
-                                                    <div>{{ $payment->created_at->format('d F, Y') }}
-                                                    </div>
+                                                        {{ $payment->date->format('d F, Y') }}
+                                                </td>
+                                                <td class="px-4 text-sm py-3">
+                                                        {{ $payment->created_at->format('d F, Y') }}
                                                 </td>
                                                 <td class="px-4 text-sm py-3">
                                                     <div>{{ $payment->amount }} <x-heroicon-o-currency-bangladeshi
@@ -304,7 +325,7 @@
 
                                             </tr>
                                         @empty
-                                            <x-tr.no-records colspan="5" />
+                                            <x-tr.no-records colspan="6" />
                                         @endforelse
                                     @endif
                                 </tbody>

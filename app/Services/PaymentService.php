@@ -1,11 +1,11 @@
-<?php 
+<?php
 namespace App\Services;
 use App\Models\Entry;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\PaymentHistory;
 
-class PaymentService 
+class PaymentService
 {
     public function debit(Request $request)
     {
@@ -19,13 +19,14 @@ class PaymentService
             'entry_id'=> null,
             'amount'=> $amount,
             'payment_type'=> 'debit',
+            'date' => $request->date,
             // 'balance'=> ($lastBalance - $amount)
         ]);
         $this->history($payment);
         return $payment;
     }
     public function credit(Entry $entry)
-    { 
+    {
         $totalCredit = Payment::where(['user_id' => $entry->user_id, 'payment_type' => 'credit'])->sum('amount');
         $totalDebit = Payment::where(['user_id' => $entry->user_id, 'payment_type' => 'debit'])->sum('amount');
         $lastBalance = $totalCredit - $totalDebit;
@@ -37,7 +38,7 @@ class PaymentService
             'payment_type'=> 'credit',
             // 'balance'=> ($lastBalance + $amount)
         ]);
-        
+
     }
 
     // public function pay()
