@@ -74,8 +74,11 @@ class EntryController extends Controller
                 'application_id' => $request->application_id,
                 'police_station' => $request->police_station,
                 'doc_type'       => 'channel',
+                'remarks'        => $request->remarks,
              ]);
-            $payment->credit($entry);
+            if ($request->remarks != 'negative') {
+                $payment->credit($entry);
+            }
 
         } elseif ($request->number_of_docs != null) {
             $number = (int) $request->number_of_docs;
@@ -133,14 +136,21 @@ class EntryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $validator->validate();
+        $oldRemarks = $entry->remarks;
         $entry = tap($entry)->update([
             'user_id'        => $request->user_id,
             'date'           => $request->date,
             'time'           => $request->time,
             'application_id' => $request->application_id,
             'police_station' => $request->police_station,
-         ]);
-        notify()->success('Entry updated successfully!');
+        ]);
+        if($request->remarks == 'negative' && $oldRemarks != 'negative') {
+            $payment   = new PaymentService;
+            $payment->debit($entry);
+            notify()->success('Entry marked as negative & Removed from credit');
+        }else{
+            notify()->success('Entry updated successfully!');
+        }
         return redirect()->route('entry.index');
     }
 

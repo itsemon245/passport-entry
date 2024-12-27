@@ -235,28 +235,33 @@
                             </div>
 
                         </div>
-                        <div class="col-span-2">
-                            <div>
-                                <label for="date"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                <div class="relative flex items-center">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
+                        <div>
+                            <label for="date"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                            <div class="relative flex items-center">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                                                              xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
                                                 d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                        </svg>
-                                    </div>
-                                    <input id="date" name="date" type="date"
-                                        value="{{ request()->date ?? today('Asia/Dhaka')->format('Y-m-d') }}"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Select date">
+                                    </svg>
                                 </div>
+                                <input id="date" name="date" type="date"
+                                                             value="{{ request()->date ?? today('Asia/Dhaka')->format('Y-m-d') }}"
+                                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                             placeholder="Select date">
                             </div>
                         </div>
-
-
-
+                        <div>
+                            <label for="remarks"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remarks</label>
+                            <select id="remarks" name="remarks" class="select">
+                                <option value="" disabled>Select Remarks</option>
+                                <option value="">No remarks</option>
+                                <option value="negative">Negative</option>
+                                <option value="second_time">Second Time</option>
+                            </select>
+                        </div>
                     </div>
                     <!-- Modal footer -->
                     <div
@@ -458,7 +463,7 @@
                                 {{ $entry->police_station }}
                             </td>
                             @if (auth()->user()->is_admin)
-                                                            <td class="px-4 py-3">
+                                <td class="px-4 py-3">
                                 <div class="flex items-center space-x-4 text-sm">
                                     <a role="button" data-modal-target="edit-modal" data-modal-toggle="edit-modal"
                                         hx-get="{{ route('entry.edit', $entry->id) }}" hx-transition
