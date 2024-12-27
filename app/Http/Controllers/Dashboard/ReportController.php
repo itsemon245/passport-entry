@@ -51,6 +51,7 @@ class ReportController extends Controller
             $q->where('date', '>=', $request->date_from);
             $q->where('date', '<=', $request->date_to);
         })
+        ->whereNot('police_station', 'Sadar')
         ->select('user_id', 'police_station', 'doc_type')
         ->orderBy('police_station')
         ->with('user')
