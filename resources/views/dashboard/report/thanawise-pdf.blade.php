@@ -149,19 +149,19 @@
                     @php
                         $count++;
                     @endphp
-                    @foreach ($clients as $i => $client)
+                    @foreach ($clients as $name => $client)
                         @php
                             $totalChannel += $client->channel_count;
                             $totalGeneral += $client->general_count;
                             $total += $client->channel_count + $client->general_count;
                         @endphp
                         <tr>
-                            @if ($i == 0)
+                            @if ($loop->first)
                                 <td rowspan="{{ $clients->count() }}">{{ $count }}</td>
                                 <td rowspan="{{ $clients->count() }}" class="text-center">{{ $thana }}</td>
                             @endif
                             <td class="text-left">
-                                <p class="no-padding no-margin">{{ $client->name }}</p>
+                                <p class="no-padding no-margin">{{ $name }}</p>
                             </td>
                             <td>
                                 {{ $client->channel_count }}
@@ -185,7 +185,7 @@
                     <td class="font-bold">
                         {{ $totalGeneral }}
                     </td>
-                    <td class="no-padding">
+                    <td class="no-padding font-bold">
                         {{ $total }}
                     </td>
                 </tr>

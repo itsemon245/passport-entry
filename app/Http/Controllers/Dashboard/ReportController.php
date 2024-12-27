@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Entry;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -46,8 +47,30 @@ class ReportController extends Controller
     }
     public function printThanawise(Request $request)
     {
-        $clients = $this->getClients($request);
-        $thanas = $clients->groupBy('police_station');
+        $thanas = Entry::where(function (Builder $q) use ($request) {
+            $q->where('date', '>=', $request->date_from);
+            $q->where('date', '<=', $request->date_to);
+        })
+        ->select('user_id', 'police_station', 'doc_type')
+        ->orderBy('police_station')
+        ->with('user')
+        ->get();
+        $thanas = $thanas
+            ->groupBy('police_station')
+            ->map(function($item){
+                return $item->groupBy('user_id');
+            });
+        $thanas = $thanas->map(function($items){
+            return $items->mapWithKeys(function($item, $key){
+                return [
+                    $item[0]->user->name => (object)[
+                        'channel_count' => $item->where('doc_type', '=', 'channel')->count(),
+                        'general_count' => $item->where('doc_type', '=', 'general')->count(),
+                        'rowspan'       => $item->count(),
+                    ]
+                ];
+            });
+        });
         return view('dashboard.report.thanawise-pdf', compact('thanas'));
     }
 
