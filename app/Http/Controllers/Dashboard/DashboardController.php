@@ -26,7 +26,7 @@ class DashboardController extends Controller
     {
         $monthName = Carbon::createFromDate(now()->year, $month, 1)->format('F');
         $data      = [  ];
-        if (auth()->user()->is_admin) {
+        if (auth()->user()->role !== 'client') {
             $data[ "Received Channel Doc on $monthName" ] = Entry::where(function ($q) use ($month) {
                 $q->whereMonth('date', $month);
                 $q->where('doc_type', 'channel');
