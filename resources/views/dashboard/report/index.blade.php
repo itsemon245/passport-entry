@@ -15,7 +15,11 @@
                     },
                     get thanawisePrintUrl(){
                         return `/dashboard/report/thanawise-print?date_from=${this.dateFrom}&date_to=${this.dateTo}`
+                    },
+                    get iowisePrintUrl(){
+                        return `/dashboard/report/iowise-print?date_from=${this.dateFrom}&date_to=${this.dateTo}`
                     }
+
             }">
         <a href="{{ route('report.client')}}"
             role="button"
@@ -76,6 +80,8 @@
             class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Print</a>
         <a x-ref="print" target="_blank" :href="thanawisePrintUrl" role="button"
             class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Thanawise Print</a>
+        <a x-ref="print" target="_blank" :href="iowisePrintUrl" role="button"
+            class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">IO-wise Print</a>
         {{-- <a x-ref="print" href="{{route('report.download.csv')."?date_from={$dateFrom}&date_to={$dateTo}"}}" role="button" class="flex gap-2 items-center justify-between w-max px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-600 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue max-md:mb-5 md:mt-7 md:block">Download</a> --}}
     </div>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">

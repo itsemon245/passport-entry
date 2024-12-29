@@ -83,18 +83,19 @@
                                                              placeholder="Select date">
                 </div>
             </div>
-            <template x-if="{{ $entry->doc_type == 'channel' }}">
-                            <div class="col-span-full">
-                <label for="remarks"
-                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remarks</label>
-                <select id="remarks" name="remarks" class="select">
-                    <option value="" disabled>Select Remarks</option>
-                    <option value="" @selected(!$entry->remarks)>No remarks</option>
-                    <option value="negative" @selected($entry->remarks == 'negative')>Negative</option>
-                    <option value="second_time" @selected($entry->remarks == 'second_time')>Second Time</option>
-                </select>
-            </div>
-            </template>
+            @if ( $entry->doc_type == 'channel' )
+
+                <div class="col-span-full">
+                    <label for="remarks"
+                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remarks</label>
+                    <select id="remarks" name="remarks" class="select">
+                        <option value="" disabled>Select Remarks</option>
+                        <option value="" @selected(!$entry->remarks)>No remarks</option>
+                        <option value="negative" @selected($entry->remarks == 'negative')>Negative</option>
+                        <option value="second_time" @selected($entry->remarks == 'second_time')>Second Time</option>
+                    </select>
+                </div>
+            @endif
 
         </div>
 

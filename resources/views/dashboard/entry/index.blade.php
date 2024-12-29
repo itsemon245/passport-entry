@@ -137,9 +137,9 @@
                 <form hx-post="{{ route('entry.store') }}" hx-select="#hx-create-form" hx-target="#hx-create-form"
                     hx-swap="outerHTML" method="post">
                     @csrf
-                    <div class="p-4 md:p-5 space-y-4">
+                    <div  id="hx-create-form"  class="p-4 md:p-5 space-y-4"  x-data="{ isChannel: '{{ old('is_channel') }}' == 'false' ? false : true }">
 
-                        <div id="hx-create-form" class="grid gap-6 mb-6 md:grid-cols-2" x-data="{ isChannel: '{{ old('is_channel') }}' == 'false' ? false : true }">
+                        <div class="grid gap-6 mb-6 md:grid-cols-2">
                             <div role="button" :class="{ 'bg-purple-600': isChannel }"
                                 class="flex max-w-max items-center px-4 border border-gray-200 rounded-lg dark:border-gray-700">
                                 <input @change="isChannel= true" id="bordered-radio-1" type="radio" value="true"
@@ -252,19 +252,16 @@
                                                              placeholder="Select date">
                             </div>
                         </div>
-                        <template x-if="isChannel">
-                                                    <div>
-                            <label for="remarks"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remarks</label>
-                            <select id="remarks" name="remarks" class="select">
-                                <option value="" disabled>Select Remarks</option>
-                                <option value="">No remarks</option>
-                                <option value="negative">Negative</option>
-                                <option value="second_time">Second Time</option>
-                            </select>
-                        </div>
-
-                        </template>
+                            <div x-show="isChannel">
+                                <label for="remarks"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remarks</label>
+                                <select id="remarks" name="remarks" class="select">
+                                    <option value="" selected disabled>Select Remarks</option>
+                                    <option value="">No remarks</option>
+                                    <option value="negative">Negative</option>
+                                    <option value="second_time">Second Time</option>
+                                </select>
+                            </div>
                     </div>
                     <!-- Modal footer -->
                     <div

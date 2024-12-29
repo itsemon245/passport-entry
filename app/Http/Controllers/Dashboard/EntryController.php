@@ -52,9 +52,10 @@ class EntryController extends Controller
     public function store(Request $request)
     {
         $payment   = new PaymentService;
+        $applicationIdUniqueValidation = $request->remarks !== 'second_time';
         $validator = Validator::make($request->all(), [
             'number_of_docs' => 'required_unless:is_channel,true|numeric|nullable',
-            'application_id' => 'required_if_accepted:is_channel|max:14|nullable|unique:entries,application_id',
+            'application_id' => 'required_if_accepted:is_channel|max:14|nullable'.($applicationIdUniqueValidation ? '|unique:entries,application_id' : ''),
             'user_id'        => 'required|exists:users,id',
             'police_station' => 'required',
             'date'           => 'date:Y-m-d',
@@ -120,9 +121,10 @@ class EntryController extends Controller
      */
     public function update(Request $request, Entry $entry)
     {
+        $applicationIdUniqueValidation = $request->remarks !== 'second_time';
         $validator = Validator::make($request->all(), [
             'number_of_docs' => 'numeric|nullable',
-            'application_id' => 'required_if_accepted:is_channel|nullable|unique:entries,application_id,' . $entry->id,
+            'application_id' => 'required_if_accepted:is_channel|nullable'.($applicationIdUniqueValidation ? '|unique:entries,application_id,' . $entry->id : ''),
             'user_id'        => 'required|exists:users,id',
             'police_station' => 'required',
             'date'           => 'date:Y-m-d',

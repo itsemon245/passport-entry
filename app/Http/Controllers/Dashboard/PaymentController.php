@@ -39,11 +39,17 @@ class PaymentController extends Controller
                 $q->where('user_id', $request->query('user_id'));
                 $q->where('doc_type', 'general');
             })->count();
-            $data[ 'channel_entry' ] = Entry::where(function ($q) use ($request) {
-                $q->where('date', '>=', $request->query('date_from'));
-                $q->where('date', '<=', $request->query('date_to'));
-                $q->where('user_id', $request->query('user_id'));
-                $q->where('doc_type', 'channel');
+            $data[ 'channel_entry' ] = Entry::where(function ($builder) use ($request) {
+                $builder->where(function ($q) use($request) {
+                    $q->where('date', '>=', $request->query('date_from'));
+                    $q->where('date', '<=', $request->query('date_to'));
+                    $q->where('user_id', $request->query('user_id'));
+                    $q->where('doc_type', 'channel');
+                });
+                $builder->where(function ($q) {
+                    $q->where('remarks','second_time');
+                    $q->orWhereNull('remarks');
+                });
             })->count();
 
             $data[ 'general_payment' ] = Payment::whereHas('entry', function ($q) use ($request) {

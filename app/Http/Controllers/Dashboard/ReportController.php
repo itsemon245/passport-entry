@@ -45,6 +45,31 @@ class ReportController extends Controller
         $clients = $this->getClients($request);
         return view('dashboard.report.pdf', compact('clients'));
     }
+    public function printIowise(Request $request)
+    {
+        $ios = Entry::where(function (Builder $q) use ($request) {
+            $q->where('date', '>=', $request->date_from);
+            $q->where('date', '<=', $request->date_to);
+        })
+        // ->whereNot('police_station', 'Sadar')
+        ->select('user_id', 'police_station', 'doc_type', 'remarks')
+        ->orderBy('police_station')
+        ->with('user')
+        ->get();
+        $ios = $ios->groupBy('user_id');
+        $ios = $ios->mapWithKeys(function($items){
+                return [
+                    $items[0]->user->name => (object)[
+                        'channel_count' => $items->where('doc_type', '=', 'channel')->count(),
+                        'general_count' => $items->where('doc_type', '=', 'general')->count(),
+                        'negative_count' => $items->where('remarks', '=', 'negative')->count(),
+                        'second_time_count' => $items->where('remarks', '=', 'second_time')->count(),
+                        'rowspan'       => $items->count(),
+                    ]
+                ];
+        });
+        return view('dashboard.report.iowise-pdf', compact('ios'));
+    }
     public function printThanawise(Request $request)
     {
         $thanas = Entry::where(function (Builder $q) use ($request) {
