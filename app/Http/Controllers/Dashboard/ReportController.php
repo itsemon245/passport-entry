@@ -53,21 +53,30 @@ class ReportController extends Controller
         })
         // ->whereNot('police_station', 'Sadar')
         ->select('user_id', 'police_station', 'doc_type', 'remarks')
-        ->orderBy('police_station')
         ->with('user')
         ->get();
-        $ios = $ios->groupBy('user_id');
-        $ios = $ios->mapWithKeys(function($items){
-                return [
-                    $items[0]->user->name => (object)[
-                        'channel_count' => $items->where('doc_type', '=', 'channel')->count(),
-                        'general_count' => $items->where('doc_type', '=', 'general')->count(),
-                        'negative_count' => $items->where('remarks', '=', 'negative')->count(),
-                        'second_time_count' => $items->where('remarks', '=', 'second_time')->count(),
-                        'rowspan'       => $items->count(),
-                    ]
-                ];
+        $ios = $ios->sortByDesc('user.name')->groupBy('user_id');
+        $lastItems = [];
+        $frontItems = [];
+        $ios->each(function($items) use (&$lastItems, &$frontItems){
+            $name = $items[0]->user->name;
+            $item = (object)[
+                'channel_count' => $items->where('doc_type', '=', 'channel')->where('remarks', '!=', 'negative')->count(),
+                'general_count' => $items->where('doc_type', '=', 'general')->count(),
+                // 'negative_count' => $items->where('remarks', '=', 'negative')->count(),
+                // 'second_time_count' => $items->where('remarks', '=', 'second_time')->count(),
+            ];
+            if(str_contains($name, 'FILE')){
+                $lastItems[$name]= $item;
+            }else{
+                $frontItems[$name]= $item;
+            }
         });
+        ksort($lastItems);
+        $ios = [
+            ...$frontItems,
+            ...$lastItems
+        ];
         return view('dashboard.report.iowise-pdf', compact('ios'));
     }
     public function printThanawise(Request $request)

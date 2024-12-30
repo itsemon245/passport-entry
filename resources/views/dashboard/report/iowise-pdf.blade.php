@@ -159,12 +159,14 @@
                             </td>
                             <td>
                                 {{ $option->channel_count }}
-                                @if ($option->negative_count > 0)
-                                    <span class="italic">(negative = {{ $option->negative_count }})</span>
-                                @endif
-                                @if ($option->second_time_count > 0)
-                                    <span class="italic">(second_time = {{ $option->second_time_count }})</span>
-                                @endif
+                                {{--
+                                    @if ($option->negative_count > 0)
+                                        <span class="italic">(negative = {{ $option->negative_count }})</span>
+                                    @endif
+                                    @if ($option->second_time_count > 0)
+                                        <span class="italic">(second_time = {{ $option->second_time_count }})</span>
+                                    @endif
+                                --}}
                             </td>
                             <td>
                                 {{ $option->general_count }}
